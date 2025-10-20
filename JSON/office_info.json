@@ -14,14 +14,63 @@
       }
     ]
   },
+    {
+    "dex": "Security",
+    "title": "Info Desk & Campus Security",
+    "image": "https://lorasgit.github.io/Exp/InfoDesk.jpg",
+    "email": "kellie.connolly@loras.edu",
+    "phone": "+5635887136",
+    "hours": "24/7",
+    "location": "Atrium ACC",
+    "links": [
+      {
+        "url": "https://lorasedu.sharepoint.com/StudentDevelopment/Safety/SitePages/Safety-%26-Security.aspx",
+        "text": "Campus Security (InsideLoras)"
+      }
+    ]
+  },
+      {
+    "dex": "HelpDesk",
+    "title": "Technology Help Desk",
+    "image": "https://lorasgit.github.io/Exp/HelpDesk.jpg",
+    "email": "HelpDesk@loras.edu",
+    "phone": "+5635884949",
+    "hours": "24/7",
+    "location": "Lower Level Christ the King Chapel",
+    "links": [
+      {
+        "url": "https://lorasedu.sharepoint.com/TechnologyServices/SitePages/Loras-College-Technology-Center.aspx",
+        "text": "Technology Services (InsideLoras)"
+      },
+       {
+        "url": "https://loras.helpspot.com/",
+        "text": "Ticketing System"
+      }     
+    ]
+  },
+      {
+    "dex": "Health Center",
+    "title": "Health Center",
+    "image": "https://lorasgit.github.io/Exp/Health.jpg",
+    "email": "kellie.connolly@loras.edu",
+    "phone": "+5635887136",
+    "hours": "8:00-3:30 Monday-Friday",
+    "location": "474 ACC",
+    "links": [
+      {
+        "url": "https://lorasedu.sharepoint.com/StudentDevelopment/HealthCenter/SitePages/Health-Center.aspx",
+        "text": "Health Center (InsideLoras)"
+      }
+    ]
+  },
   {
-    "dex": "Adm",
-    "title": "Admissions",
-    "image": "https://lorasgit.github.io/Exp/Admissions.jpg",
+    "dex": "CC",
+    "title": "Counseling Center",
+    "image": "https://lorasgit.github.io/Exp/AA3.jpg",
     "email": "admissions@loras.edu",
     "phone": "+5635887236",
-    "hours": "8:00 am - 4:30 pm Monday-Friday",
-    "location": "120 Keane",
+    "hours": "8:30-5:00 Monday-Friday",
+    "location": "473 ACC",
     "links": [
       {
         "url": "https://www.loras.edu/admissions",
