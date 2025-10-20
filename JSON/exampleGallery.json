@@ -1,0 +1,20 @@
+[
+  {
+    "image": "https://lorasgit.github.io/Exp/BannerDuhawks.jpg",
+    "link": "https://www.loras.edu/",
+    "alt": "Duhawks",
+    "caption": "Duhawks"
+  },
+  {
+    "image": "https://lorasgit.github.io/Exp/BannerCTK.jpg",
+    "link": "https://www.loras.edu/spiritual-life/christ-the-king-chapel/",
+    "alt": "Christ The King Chapel",
+    "caption": "Christ The King Chapel"
+  },
+  {
+    "image": "https://lorasgit.github.io/Exp/BannerKeaneGrass.jpg",
+    "link": "https://www.loras.edu/about/campus-map/",
+    "alt": "Keane Hall",
+    "caption": "Keane Hall"
+  }
+]
