@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Public",
+    "tooltip": "Public facing website",
+    "image": "https://lorasgit.github.io/Exp/lorasedu.png",
+    "link": "https://www.loras.edu/",
+    "description": "The public-facing marketing website shares news and information about Loras with the world."
+  },
+  {
+    "title": "Duhawks",
+    "tooltip": "Duhawks.com",
+    "image": "https://lorasgit.github.io/Exp/duhawks.png",
+    "link": "https://www.duhawks.com",
+    "description": "Our public-facing athletic website is the source for all things Loras athletics."
+  },
+  {
+    "title": "DuConnect",
+    "tooltip": "DuConnect",
+    "image": "https://lorasgit.github.io/Exp/duconnect.png",
+    "link": "https://loras.campuslabs.com/engage/",
+    "description": "DuConnect connects students and employees with clubs, activities and events at Loras."
+  },
+  {
+    "title": "InsideLoras",
+    "tooltip": "InsideLoras",
+    "image": "https://lorasgit.github.io/Exp/insideloras.png",
+    "link": "https://lorasedu.sharepoint.com/SitePages/Home.aspx",
+    "description": "InsideLoras"
+  }
+]
