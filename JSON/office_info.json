@@ -1,5 +1,6 @@
 [
   {
+    "dex": "Aid",
     "title": "Financial Planning",
     "image": "https://lorasgit.github.io/Exp/StuAccts.jpg",
     "email": "kellie.connolly@loras.edu",
@@ -14,6 +15,7 @@
     ]
   },
   {
+    "dex": "Adm",
     "title": "Admissions",
     "image": "https://lorasgit.github.io/Exp/Admissions.jpg",
     "email": "admissions@loras.edu",
@@ -28,7 +30,7 @@
     ]
   },
   {
-    "title": "Registrar",
+    "dex": "Reg",
     "image": "https://lorasgit.github.io/Exp/Registrar.jpg",
     "email": "registrar@loras.edu",
     "phone": "+5635887148",
@@ -42,7 +44,7 @@
     ]
   },
   {
-    "title": "Student Accounts",
+    "dex": "SA",
     "image": "https://lorasgit.github.io/Exp/StuAccts.jpg",
     "email": "Carrie.Jones@loras.edu",
     "phone": "+5635887232",
