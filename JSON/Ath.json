@@ -1,24 +1,24 @@
 [
   {
-    "image": "football.jpg",
+    "image": "football.png",
     "link": "https://duhawks.com",
     "alt": "Football",
     "caption": "Football"
   },
   {
-    "image": "https://lorasgit.github.io/Exp/Volleyball.jpg",
+    "image": "https://lorasgit.github.io/Exp/Volleyball.png",
     "link": "https://duhawks.com",
     "alt": "Volleyball",
     "caption": "Volleyball"
   },
   {
-    "image": "https://lorasgit.github.io/Exp/Softball.jpg",
+    "image": "https://lorasgit.github.io/Exp/Softball.png",
     "link": "https://duhawks.com",
     "alt": "Softball",
     "caption": "Softball"
   },
     {
-    "image": "https://lorasgit.github.io/Exp/Soccer.jpg",
+    "image": "https://lorasgit.github.io/Exp/Soccer.png",
     "link": "https://duhawks.com",
     "alt": "Soccer",
     "caption": "Soccer"
