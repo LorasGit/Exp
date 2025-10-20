@@ -1,13 +1,13 @@
 [
   {
-    "title": "Public",
-    "tooltip": "Public facing website",
+    "title": "Loras.edu",
+    "tooltip": "Public-facing Marketing website",
     "image": "https://lorasgit.github.io/Exp/lorasedu.png",
     "link": "https://www.loras.edu/",
     "description": "The public-facing marketing website shares news and information about Loras with the world."
   },
   {
-    "title": "Duhawks",
+    "title": "Duhawks.com",
     "tooltip": "Duhawks.com",
     "image": "https://lorasgit.github.io/Exp/duhawks.png",
     "link": "https://www.duhawks.com",
@@ -18,13 +18,13 @@
     "tooltip": "DuConnect",
     "image": "https://lorasgit.github.io/Exp/duconnect.png",
     "link": "https://loras.campuslabs.com/engage/",
-    "description": "DuConnect connects students and employees with clubs, activities and events at Loras."
+    "description": "DuConnect connects students and employees with clubs, activities and events at Loras. It requires an employee or student login."
   },
   {
     "title": "InsideLoras",
     "tooltip": "InsideLoras",
     "image": "https://lorasgit.github.io/Exp/insideloras.png",
     "link": "https://lorasedu.sharepoint.com/SitePages/Home.aspx",
-    "description": "InsideLoras"
+    "description": "InsideLoras is Loras' SharePoint site. It's a wealth of information. It requires an employee or student login."
   }
 ]
