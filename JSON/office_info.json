@@ -31,6 +31,7 @@
   },
   {
     "dex": "Reg",
+    "title": "Registrar",
     "image": "https://lorasgit.github.io/Exp/Registrar.jpg",
     "email": "registrar@loras.edu",
     "phone": "+5635887148",
@@ -45,6 +46,7 @@
   },
   {
     "dex": "SA",
+    "title": "Student Accounts",
     "image": "https://lorasgit.github.io/Exp/StuAccts.jpg",
     "email": "Carrie.Jones@loras.edu",
     "phone": "+5635887232",
