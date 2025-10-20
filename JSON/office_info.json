@@ -1,6 +1,7 @@
 [
   {
     "dex": "Aid",
+    "tab": "Aid",
     "title": "Financial Planning",
     "image": "https://lorasgit.github.io/Exp/FP.jpg",
     "email": "kellie.connolly@loras.edu",
@@ -15,7 +16,8 @@
     ]
   },
     {
-    "dex": "Security",
+    "dex": "Inf",
+    "tab": "Info",
     "title": "Info Desk & Campus Security",
     "image": "https://lorasgit.github.io/Exp/InfoDesk.jpg",
     "email": "kellie.connolly@loras.edu",
@@ -30,7 +32,8 @@
     ]
   },
       {
-    "dex": "HelpDesk",
+    "dex": "HDk",
+    "tab": "Help Desk",
     "title": "Technology Help Desk",
     "image": "https://lorasgit.github.io/Exp/HelpDesk.jpg",
     "email": "HelpDesk@loras.edu",
@@ -49,7 +52,8 @@
     ]
   },
       {
-    "dex": "Health Center",
+    "dex": "HC",
+    "Tab": "Health",
     "title": "Health Center",
     "image": "https://lorasgit.github.io/Exp/Health.jpg",
     "email": "kellie.connolly@loras.edu",
@@ -65,6 +69,7 @@
   },
   {
     "dex": "CC",
+    "Tab": "Counseling",
     "title": "Counseling Center",
     "image": "https://lorasgit.github.io/Exp/AA3.jpg",
     "email": "admissions@loras.edu",
@@ -80,6 +85,7 @@
   },
   {
     "dex": "Reg",
+    "tab": "Registrar",
     "title": "Registrar",
     "image": "https://lorasgit.github.io/Exp/Registrar.jpg",
     "email": "registrar@loras.edu",
@@ -95,6 +101,7 @@
   },
   {
     "dex": "SA",
+    "tab": "Accts",
     "title": "Student Accounts",
     "image": "https://lorasgit.github.io/Exp/StuAccts.jpg",
     "email": "Carrie.Jones@loras.edu",
