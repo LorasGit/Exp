@@ -20,25 +20,20 @@
     {
     "image": "https://lorasgit.github.io/Exp/StainedGlass1.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall",
-    "caption": "Keane Hall"
+    "alt": "Stained Glass Window",
+    "caption": "Stained Glass Window"
   },
+
     {
-    "image": "https://lorasgit.github.io/Exp/StainedGlass2.jpg",
+    "image": "https://lorasgit.github.io/Exp/Libview.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall",
-    "caption": "Keane Hall"
-  },
-    {
-    "image": "https://lorasgit.github.io/Exp/LibView.jpg",
-    "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall",
-    "caption": "Keane Hall"
+    "alt": "Library View",
+    "caption": "Looking towards the Mississippi from the Library"
   },
   {
     "image": "https://lorasgit.github.io/Exp/VKeane.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall",
-    "caption": "Keane Hall"
+    "alt": "Keane Hall steps",
+    "caption": "Keane Hall steps"
   }
 ]
