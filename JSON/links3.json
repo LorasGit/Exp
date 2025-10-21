@@ -1,0 +1,21 @@
+{
+  "headerImage": "https://lorasgit.github.io/Exp/BannerLogo3.png",
+  "headerTitle": "Self-Service",
+  "links": [
+    {
+      "url": "https://selfservice.loras.edu/Student/HumanResources/Home",
+      "icon": "add_ad",
+      "text": "Employee Home"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/HumanResources/TaxInformation?hideProxyDialog=false#FormW2",
+      "icon": "Book",
+      "text": "Taxes"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/HumanResources/PositionHistory",
+      "icon": "School",
+      "text": "Position History"
+    }
+  ]
+}
