@@ -4,7 +4,7 @@
   "links": [
     {
       "url": "https://selfservice.loras.edu/Student/Planning/DegreePlans",
-      "icon": "Add Ad",
+      "icon": "add_ad",
       "text": "Register for Classes"
     },
     {
@@ -24,7 +24,7 @@
     },
         {
       "url": "https://selfservice.loras.edu/Student/Student/TransferSummary",
-      "icon": "card_giftcard",
+      "icon": "quick_reference",
       "text": "Transfer Summary"
     }
   ]
