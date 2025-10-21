@@ -1,6 +1,12 @@
 [
   {
-    "image": "https://lorasgit.github.io/Exp/cafe1.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cafe1.jpg",
+    "link": "https://loras.campusdish.com/LocationsAndMenus",
+    "alt": "Menu",
+    "caption": "Locations and Menus"
+  },
+    {
+    "image": "https://lorasgit.github.io/Exp/Cafe.jpg",
     "link": "https://loras.campusdish.com/LocationsAndMenus",
     "alt": "Menu",
     "caption": "Locations and Menus"
