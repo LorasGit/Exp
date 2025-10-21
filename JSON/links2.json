@@ -4,28 +4,28 @@
   "links": [
     {
       "url": "https://selfservice.loras.edu/Student/Planning/DegreePlans",
-      "icon": "campaign",
+      "icon": "Add Ad",
       "text": "Register for Classes"
     },
     {
       "url": "https://selfservice.loras.edu/Student/Student/Courses",
-      "icon": "church",
+      "icon": "Book",
       "text": "Course Catalog"
     },
     {
       "url": "https://selfservice.loras.edu/Student/Student/Transcripts",
-      "icon": "flag",
+      "icon": "School",
       "text": "Unofficial Transcript"
     },
     {
       "url": "https://selfservice.loras.edu/Student/Planning",
-      "icon": "card_giftcard",
+      "icon": "Map",
       "text": "Student Planning"
     },
         {
       "url": "https://selfservice.loras.edu/Student/Student/TransferSummary",
       "icon": "card_giftcard",
-      "text": "Transfer Summary"
+      "text": "Quick Reference"
     }
   ]
 }
