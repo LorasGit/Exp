@@ -1,0 +1,31 @@
+{
+  "headerImage": "https://lorasgit.github.io/Exp/BannerLogo3.png",
+  "headerTitle": "Self-Service",
+  "links": [
+    {
+      "url": "https://selfservice.loras.edu/Student/Planning/DegreePlans",
+      "icon": "campaign",
+      "text": "Register for Classes"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/Student/Courses",
+      "icon": "church",
+      "text": "Course Catalog"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/Student/Transcripts",
+      "icon": "flag",
+      "text": "Unofficial Transcript"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/Planning",
+      "icon": "card_giftcard",
+      "text": "Student Planning"
+    },
+        {
+      "url": "https://selfservice.loras.edu/Student/Student/TransferSummary",
+      "icon": "card_giftcard",
+      "text": "Transfer Summary"
+    }
+  ]
+}
