@@ -1,17 +1,17 @@
 [
   {
     "title": "Loras.edu",
-    "tooltip": "Public-facing Marketing website",
+    "tooltip": "Loras website",
     "image": "https://lorasgit.github.io/Exp/lorasedu.png",
     "link": "https://www.loras.edu/",
-    "description": "The public-facing marketing website shares news and information about Loras with the world."
+    "description": "Loras.edu shares news and information about Loras with the world."
   },
   {
     "title": "Duhawks.com",
     "tooltip": "Duhawks.com",
     "image": "https://lorasgit.github.io/Exp/duhawks.png",
     "link": "https://www.duhawks.com",
-    "description": "Our public-facing athletic website is the source for all things Loras athletics."
+    "description": "Duhawks.com is your source for all things Loras athletics."
   },
   {
     "title": "DuConnect",
