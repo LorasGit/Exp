@@ -4,17 +4,17 @@
   "links": [
     {
       "url": "https://selfservice.loras.edu/Student/HumanResources/Home",
-      "icon": "add_ad",
+      "icon": "home",
       "text": "Employee Home"
     },
     {
       "url": "https://selfservice.loras.edu/Student/HumanResources/TaxInformation?hideProxyDialog=false#FormW2",
-      "icon": "Book",
+      "icon": "checkbook",
       "text": "Taxes"
     },
     {
       "url": "https://selfservice.loras.edu/Student/HumanResources/PositionHistory",
-      "icon": "School",
+      "icon": "work_history",
       "text": "Position History"
     }
   ]
