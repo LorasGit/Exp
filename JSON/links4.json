@@ -1,0 +1,21 @@
+{
+  "headerImage": "https://lorasgit.github.io/Exp/BannerLogo3.png",
+  "headerTitle": "Self-Service",
+  "links": [
+    {
+      "url": "https://selfservice.loras.edu/Student/FinancialAid/Home",
+      "icon": "home",
+      "text": "Aid Home"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/FinancialAid/Awards",
+      "icon": "star_shine",
+      "text": "Awards"
+    },
+    {
+      "url": "https://selfservice.loras.edu/Student/FinancialAid/SatisfactoryAcademicProgress",
+      "icon": "arrow_warm_up",
+      "text": "Satisfactory Academic Progress"
+    }
+  ]
+}
