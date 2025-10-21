@@ -1,0 +1,26 @@
+{
+  "title": "Loras College Links",
+  "headerImage": "https://lorasgit.github.io/Exp/BannerLogo3.png",
+  "links": [
+    {
+      "url": "https://loras.campuslabs.com/engage/",
+      "icon": "campaign",
+      "label": "DuConnect"
+    },
+    {
+      "url": "https://lorasedu.sharepoint.com/SpiritualLife/SitePages/Spiritual-Life.aspx",
+      "icon": "church",
+      "label": "Spiritual Life"
+    },
+    {
+      "url": "https://duhawks.com/calendar",
+      "icon": "flag",
+      "label": "Athletic Events"
+    },
+    {
+      "url": "https://sideline.bsnsports.com/schools/iowa/dubuque/loras-college",
+      "icon": "card_giftcard",
+      "label": "Dewey's Perch"
+    }
+  ]
+}
