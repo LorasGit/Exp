@@ -8,13 +8,13 @@
   {
     "image": "https://lorasgit.github.io/Exp/BannerCTK.jpg",
     "link": "https://www.loras.edu/spiritual-life/christ-the-king-chapel/",
-    "alt": "CTK Chapel",
+    "alt": "Chapel",
     "caption": "Christ The King Chapel"
   },
   {
     "image": "https://lorasgit.github.io/Exp/BannerKeaneGrass.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall",
+    "alt": "Keane",
     "caption": "Keane Hall"
   },
     {
@@ -27,13 +27,13 @@
     {
     "image": "https://lorasgit.github.io/Exp/Libview.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Library View",
+    "alt": "Library",
     "caption": "Looking towards the Mississippi from the Library"
   },
   {
     "image": "https://lorasgit.github.io/Exp/VKeane.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
-    "alt": "Keane Hall steps",
+    "alt": "Keane",
     "caption": "Keane Hall"
   }
 ]
