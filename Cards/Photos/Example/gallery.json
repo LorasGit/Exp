@@ -1,18 +1,18 @@
 [
   {
-    "image": "https://lorasgit.github.io/Exp/BannerDuhawks.jpg",
+    "image": "https://lorasgit.github.io/Exp/Banners/Duhawks.jpg",
     "link": "https://www.loras.edu/",
     "alt": "Flags",
     "caption": "Duhawk Flags at the Rock Bowl"
   },
   {
-    "image": "https://lorasgit.github.io/Exp/BannerCTK.jpg",
+    "image": "https://lorasgit.github.io/Exp/Banners/CTK.jpg",
     "link": "https://www.loras.edu/spiritual-life/christ-the-king-chapel/",
     "alt": "Chapel",
     "caption": "Christ The King Chapel"
   },
   {
-    "image": "https://lorasgit.github.io/Exp/BannerKeaneGrass.jpg",
+    "image": "https://lorasgit.github.io/Exp/Banners/KeaneGrass.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "Keane",
     "caption": "Keane Hall"
@@ -25,7 +25,7 @@
   },
 
     {
-    "image": "https://lorasgit.github.io/Exp/Libview.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Examle/Libview.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "View",
     "caption": "Looking towards the Mississippi from the Library"
