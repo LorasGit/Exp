@@ -31,19 +31,19 @@
     "caption": "Looking towards the Mississippi from the Library"
   },
       {
-    "image": "https://lorasgit.github.io/Exp/stugov.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/stugov.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "Student Gov",
     "caption": "Student Government"
   },
         {
-    "image": "https://lorasgit.github.io/Exp/MARC.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/MARC.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "MARC",
     "caption": "Miller Academic Resource Center (Library)"
   },
   {
-    "image": "https://lorasgit.github.io/Exp/VKeane.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/VKeane.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "Keane",
     "caption": "Keane Hall"
