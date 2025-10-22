@@ -30,6 +30,18 @@
     "alt": "Library",
     "caption": "Looking towards the Mississippi from the Library"
   },
+      {
+    "image": "https://lorasgit.github.io/Exp/stugov.jpg",
+    "link": "https://www.loras.edu/about/campus-map/",
+    "alt": "Student Gov",
+    "caption": "Student Government"
+  },
+        {
+    "image": "https://lorasgit.github.io/Exp/MARC.jpg",
+    "link": "https://www.loras.edu/about/campus-map/",
+    "alt": "MARC",
+    "caption": "Miller Academic Resource Center (Library)"
+  },
   {
     "image": "https://lorasgit.github.io/Exp/VKeane.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
