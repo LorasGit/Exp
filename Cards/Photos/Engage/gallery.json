@@ -11,6 +11,12 @@
     "alt": "Legacy",
     "caption": "Legacy Symposium"
   },
+      {
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/stugov.jpg",
+    "link": "https://loras.campuslabs.com/engage/",
+    "alt": "Student Government",
+    "caption": "Student Government"
+  },
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E3.jpg",
     "link": "https://loras.campuslabs.com/engage/",
@@ -49,9 +55,9 @@
     "caption": "Travel Abroad"
   },
     {
-    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/stugov.jpg",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E9.jpg",
     "link": "https://loras.campuslabs.com/engage/",
-    "alt": "Student Government",
-    "caption": "Student Government"
+    "alt": "Plays",
+    "caption": "Loras Players"
   }
 ]
