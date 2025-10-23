@@ -2,28 +2,35 @@
   {
     "title": "Loras.edu",
     "tooltip": "Loras website",
-    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/lorasedu.png",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/lorasedu.jpg",
     "link": "https://www.loras.edu/",
     "description": "Loras.edu shares news and information about Loras with the world."
   },
   {
     "title": "Duhawks.com",
     "tooltip": "Duhawks.com",
-    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/duhawks.png",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/duhawkscom.jpg",
     "link": "https://www.duhawks.com",
     "description": "Duhawks.com is your source for all things Loras athletics."
   },
   {
     "title": "DuConnect",
     "tooltip": "DuConnect",
-    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/duconnect.png",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/duconnect.jpg",
     "link": "https://loras.campuslabs.com/engage/",
     "description": "DuConnect connects students and employees with clubs, activities and events at Loras. It requires an employee or student login."
+  },
+    {
+    "title": "eLearn",
+    "tooltip": "eLearn",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/elearn.jpg",
+    "link": "https://elearn.loras.edu",
+    "description": "eLearn is the source for all your course work including syllabi, assignments and grades."
   },
   {
     "title": "InsideLoras",
     "tooltip": "InsideLoras",
-    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/insideloras.png",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/insideloras.jpg",
     "link": "https://lorasedu.sharepoint.com/SitePages/Home.aspx",
     "description": "InsideLoras is Loras' SharePoint site. It's a wealth of information. It requires an employee or student login."
   }
