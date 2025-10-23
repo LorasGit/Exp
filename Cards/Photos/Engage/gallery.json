@@ -1,19 +1,19 @@
 [
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E1.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://loras.edu/worship-faith/",
     "alt": "Mass",
     "caption": "Attend Mass"
   },
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E2.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://loras.edu/legacy-symposium/",
     "alt": "Legacy",
     "caption": "Present at the Legacy Symposium"
   },
       {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/stugov.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://loras.campuslabs.com/engage/organization/lorasstudentgovernment",
     "alt": "Student Government",
     "caption": "Join the Student Government"
   },
@@ -32,13 +32,13 @@
 
     {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E5.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://loras.edu/service-social-justice/#trec",
     "alt": "Advocate",
-    "caption": "Advocate for Change"
+    "caption": "Advocate for Change/Trec Trips"
   },
       {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E6.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://loras.edu/service-social-justice/",
     "alt": "Service",
     "caption": "Do Service"
   },
@@ -56,7 +56,7 @@
   },
     {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E9.jpg",
-    "link": "https://loras.campuslabs.com/engage/",
+    "link": "https://lorasplayers.yolasite.com/",
     "alt": "Plays",
     "caption": "Preform with the Loras Players"
   }
