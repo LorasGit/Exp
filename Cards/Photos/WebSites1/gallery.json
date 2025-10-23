@@ -27,6 +27,13 @@
     "link": "https://elearn.loras.edu",
     "description": "eLearn is the source for all your course work including syllabi, assignments and grades."
   },
+      {
+    "title": "Self-Service",
+    "tooltip": "Self-Service",
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/WebSites1/self-service.jpg",
+    "link": "https://selfservice.loras.edu/Student/",
+    "description": "Self-Service offers differnt features for students, faculty and staff from entering grades, getting unofficial transcripts or seeing earning statements and tax forms."
+  },
   {
     "title": "InsideLoras",
     "tooltip": "InsideLoras",
