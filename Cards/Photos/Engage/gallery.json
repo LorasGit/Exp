@@ -48,10 +48,16 @@
     "alt": "Friendship",
     "caption": "Make Friends"
   },
+          {
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E8.jpg",
+    "link": "https://loras.campuslabs.com/engage/",
+    "alt": "Travel Abroad",
+    "caption": "Travel Abroad"
+  },
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Engage/E10.jpg",
     "link": "https://loras.campuslabs.com/engage/",
-    "alt": "Travel Abroad",
+    "alt": "Study Abroad",
     "caption": "Study Abroad"
   },
     {
