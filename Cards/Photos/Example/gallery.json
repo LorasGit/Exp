@@ -1,7 +1,7 @@
 [
   {
     "image": "https://lorasgit.github.io/Exp/Banners/Duhawks.jpg",
-    "link": "https://www.loras.edu/",
+    "link": "https://www.duhawks.com",
     "alt": "Flags",
     "caption": "Duhawk Flags at the Rock Bowl"
   },
@@ -30,8 +30,20 @@
     "alt": "View",
     "caption": "Looking towards the Mississippi from the Library"
   },
+ {
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/Vstatue.jpg",
+    "link": "https://www.loras.edu/spiritual-life",
+    "alt": "Statue",
+    "caption": "Statue of Jesus"
+  },
+   {
+    "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/Vclouds.jpg",
+    "link": "https://www.loras.edu/about/campus-map/",
+    "alt": "Clouds",
+    "caption": "Clouds reflected on the ACC windows"
+  },
 
-        {
+  {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/MARC.jpg",
     "link": "https://www.loras.edu/about/campus-map/",
     "alt": "MARC",
