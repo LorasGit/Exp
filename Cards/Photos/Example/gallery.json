@@ -13,20 +13,20 @@
   },
   {
     "image": "https://lorasgit.github.io/Exp/Banners/KeaneGrass.jpg",
-    "link": "https://www.loras.edu/",
+    "link": "https://loras.edu/",
     "alt": "Keane",
     "caption": "Keane Hall"
   },
     {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/StainedGlass1.jpg",
-    "link": "https://www.loras.edu/about/campus-map/",
+    "link": "https://loras.edu/campus-map/",
     "alt": "Window",
     "caption": "Stained Glass Window"
   },
 
     {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/LibView.jpg",
-    "link": "https://www.loras.edu/",
+    "link": "https://loras.edu/",
     "alt": "View",
     "caption": "Looking towards the Mississippi from the Library"
   },
@@ -38,20 +38,20 @@
   },
    {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/Vclouds.jpg",
-    "link": "https://www.loras.edu/about/campus-map/",
+    "link": "https://loras.edu/campus-map/",
     "alt": "Clouds",
     "caption": "Clouds reflected on the ACC windows"
   },
 
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/MARC.jpg",
-    "link": "https://www.loras.edu/about/campus-map/",
+    "link": "https://loras.edu/campus-map/",
     "alt": "MARC",
     "caption": "Miller Academic Resource Center (Library)"
   },
   {
     "image": "https://lorasgit.github.io/Exp/Cards/Photos/Example/VKeane.jpg",
-    "link": "https://www.loras.edu/about/campus-map/",
+    "link": "https://loras.edu/campus-map/",
     "alt": "Keane",
     "caption": "Keane Hall"
   }
