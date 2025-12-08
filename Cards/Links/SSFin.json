@@ -16,11 +16,7 @@
       "url": "https://selfservice.loras.edu/Student/FinancialAid/SatisfactoryAcademicProgress",
       "icon": "arrow_warm_up",
       "text": "Satisfactory Academic Progress"
-    },    
-    {
-      "url": "https://selfservice.loras.edu/Student/Finance/Payments",
-      "icon": "credit_card",
-      "text": "Make a Payment"
-    }
+    }   
+
   ]
 }
