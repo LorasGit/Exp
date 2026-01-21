@@ -3,11 +3,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loras College Offices</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
 
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       padding: 16px;
     }
 
@@ -19,10 +23,54 @@
 
     th {
       text-align: left;
-      background-color: #442D7D; /* Loras purple */
+      background-color: #D1B888; /* Loras gold */
       color: #ffffff;
       padding: 10px;
+      padding: 6px 24px; /* reduced vertical padding */
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start; /* keeps buttons high */
     }
+    .header-icons {
+      display: flex;
+      gap: 10px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header-icons li {
+      width: 40px;  /* slightly smaller buttons */
+      height: 40px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .header-icons a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 50%;
+    }
+
+    .header-icons a:hover,
+    .header-icons a:focus {
+      outline: 3px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    .material-symbols-outlined {
+      font-size: 20px;
+      color: var(--primary-color);
+    }
+
 
     td {
       padding: 8px 10px;
@@ -102,7 +150,7 @@ if (!o.label1 && o.URL1) {  o.label1 = o.URL1; }
 if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
 
       if (o.label2 && o.URL2) {
-        linksHtml += `<a href="${o.URL2}" target="_blank">${o.label2}</a>`;
+        linksHtml += `<br /><a href="${o.URL2}" target="_blank">${o.label2}</a>`;
       }
 
       const row = document.createElement("tr");
@@ -114,7 +162,26 @@ if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
         ${o.email || ""}<br />
         ${show_phone}<br />
         ${linksHtml}
-        </td><td>Phone and email buttons go here</td>
+        </td><th>
+        
+          <!--header class="top-bar"> -->
+    <ul class="header-icons">
+      <li>
+        <a href="mailto:Gina.Noel@loras.edu" aria-label="Send email">
+          <span class="material-symbols-outlined">mail</span>
+        </a>
+      </li>
+      <li>
+        <a href="tel:+15635887816" aria-label="Call HR office">
+          <span class="material-symbols-outlined">call</span>
+        </a>
+      </li>
+    </ul>
+  </header>
+
+  
+        
+        Phone and email buttons go here</th>
       `;
 
       tbody.appendChild(row);
