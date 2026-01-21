@@ -92,7 +92,7 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
       let linksHtml = "";
 
       if (o.label1 && o.URL1) {
-        linksHtml += `${o.URL1}${o.label1}</a>`;
+        linksHtml += `<a href="${o.URL1}" target="_blank">${o.label1}</a>`;
       }
 
       if (o.label2 && o.URL2) {
@@ -101,13 +101,14 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
 
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${o.name}<br />
+        <td>
+        <h3>${o.name}</H3>
         ${o.hours || ""}<br />
         ${o.location || ""}<br />
         ${o.email || ""}<br />
-        ${show_phone}
+        ${show_phone}<br />
         ${linksHtml}
-        </td>
+        </td><td>Phone and email buttons go here</td>
       `;
 
       tbody.appendChild(row);
