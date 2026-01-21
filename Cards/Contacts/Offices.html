@@ -91,12 +91,18 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
 
       let linksHtml = "";
 
+      
+if (!o.label1 && o.URL1) {  o.label1 = o.URL1; }
+
       if (o.label1 && o.URL1) {
         linksHtml += `<a href="${o.URL1}" target="_blank">${o.label1}</a>`;
       }
 
+      
+if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
+
       if (o.label2 && o.URL2) {
-        linksHtml += `${o.URL2}${o.label2}</a>`;
+        linksHtml += `<a href="${o.URL2}" target="_blank">${o.label2}</a>`;
       }
 
       const row = document.createElement("tr");
