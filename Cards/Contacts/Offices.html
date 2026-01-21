@@ -21,7 +21,7 @@
       font-size: 14px;
     }
 
-    th {
+    .header {
       text-align: left;
       background-color: #D1B888; /* Loras gold */
       color: #ffffff;
@@ -162,17 +162,17 @@ if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
         ${o.email || ""}<br />
         ${show_phone}<br />
         ${linksHtml}
-        </td><th>
+        </td><td>
         
-          <!--header class="top-bar"> -->
+    <header class="button-bar">  
     <ul class="header-icons">
       <li>
-        <a href="mailto:Gina.Noel@loras.edu" aria-label="Send email">
+        <a href="mailto:${o.email || ""}" aria-label="Email">
           <span class="material-symbols-outlined">mail</span>
         </a>
       </li>
       <li>
-        <a href="tel:+15635887816" aria-label="Call HR office">
+        <a href="tel:${show_phone}" aria-label="Call">
           <span class="material-symbols-outlined">call</span>
         </a>
       </li>
@@ -181,7 +181,7 @@ if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
 
   
         
-        Phone and email buttons go here</th>
+</td>
       `;
 
       tbody.appendChild(row);
