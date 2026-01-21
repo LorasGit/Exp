@@ -5,42 +5,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loras College Offices</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
-
   <style>
+    :root {
+      --primary-color: #442D7D; /* Loras purple */
+    }
+
     body {
       font-family: 'Roboto', sans-serif;
       padding: 16px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    h2 {
+      margin-bottom: 12px;
+    }
+
+    .office-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .office-info {
       font-size: 14px;
     }
 
-    .header {
-      text-align: left;
-      background-color: #D1B888; /* Loras gold */
-      color: #ffffff;
-      padding: 10px;
-      padding: 6px 24px; /* reduced vertical padding */
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-start; /* keeps buttons high */
-    }
-    .header-icons {
-      display: flex;
-      gap: 10px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    .office-info h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
     }
 
-    .header-icons li {
-      width: 40px;  /* slightly smaller buttons */
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .office-actions {
+      display: grid;
+      grid-auto-rows: min-content;
+      gap: 10px;
+      justify-items: start;
+    }
+
+    .office-actions a {
+      width: 40px;
       height: 40px;
       background: #ffffff;
       border-radius: 50%;
@@ -48,20 +65,12 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .header-icons a {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       text-decoration: none;
-      border-radius: 50%;
     }
 
-    .header-icons a:hover,
-    .header-icons a:focus {
+    /* Hover / focus outline like previous version */
+    .office-actions a:hover,
+    .office-actions a:focus {
       outline: 3px solid var(--primary-color);
       outline-offset: 2px;
     }
@@ -71,33 +80,15 @@
       color: var(--primary-color);
     }
 
+    @media (max-width: 480px) {
+      .office-row {
+        gap: 6px;
+        padding: 8px 0;
+      }
 
-    td {
-      padding: 8px 10px;
-      border-bottom: 1px solid #ddd;
-      vertical-align: top;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f7f7f7;
-    }
-
-    a {
-      color: #442D7D;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .links a {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .phone {
-      white-space: nowrap;
+      .office-info {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
@@ -106,90 +97,47 @@
 
 <h2>Loras College Offices</h2>
 
-<table id="officesTable">
-
-  <tbody>
-    <!-- Rows injected by JS -->
-  </tbody>
-</table>
+<div id="offices"></div>
 
 <script>
 fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no-store" })
   .then(response => response.json())
   .then(data => {
-
     const offices = data.offices || [];
-
-    // Alphabetize by name
     offices.sort((a, b) => a.name.localeCompare(b.name));
-
-    const tbody = document.querySelector("#officesTable tbody");
+    const container = document.getElementById('offices');
 
     offices.forEach(o => {
+      const show_phone = [o.area, o.prefix, o.line].filter(Boolean).join('-');
+      let linksHtml = '';
 
-      const show_phone = [o.area, o.prefix, o.line]
-        .filter(Boolean)
-        .join("-");
+      if (!o.label1 && o.URL1) o.label1 = o.URL1;
+      if (o.label1 && o.URL1) linksHtml += `<a href="${o.URL1}" target="_blank">${o.label1}</a>`;
 
-      
-   const tel_phone = ["+1", o.area, o.prefix, o.line]
-  .filter(Boolean)
-  .join("");
+      if (!o.label2 && o.URL2) o.label2 = o.URL2;
+      if (o.label2 && o.URL2) linksHtml += `<br /><a href="${o.URL2}" target="_blank">${o.label2}</a>`;
 
-
-      let linksHtml = "";
-
-      
-if (!o.label1 && o.URL1) {  o.label1 = o.URL1; }
-
-      if (o.label1 && o.URL1) {
-        linksHtml += `<a href="${o.URL1}" target="_blank">${o.label1}</a>`;
-      }
-
-      
-if (!o.label2 && o.URL2) { o.label2 = o.URL2; }
-
-      if (o.label2 && o.URL2) {
-        linksHtml += `<br /><a href="${o.URL2}" target="_blank">${o.label2}</a>`;
-      }
-
-      const row = document.createElement("tr");
+      const row = document.createElement('div');
+      row.className = 'office-row';
       row.innerHTML = `
-        <td>
-        <h3>${o.name}</H3>
-        ${o.hours || ""}<br />
-        ${o.location || ""}<br />
-        ${o.email || ""}<br />
-        ${show_phone}<br />
-        ${linksHtml}
-        </td><td>
-        
-    <header class="button-bar">  
-    <ul class="header-icons">
-      <li>
-        <a href="mailto:${o.email || ""}" aria-label="Email">
-          <span class="material-symbols-outlined">mail</span>
-        </a>
-      </li>
-      <li>
-        <a href="tel:${show_phone}" aria-label="Call">
-          <span class="material-symbols-outlined">call</span>
-        </a>
-      </li>
-    </ul>
-  </header>
+        <div class="office-info">
+          <h3>${o.name}</h3>
+          ${o.hours || ''}<br />
+          ${o.location || ''}<br />
+          ${o.email || ''}<br />
+          ${show_phone}<br />
+          ${linksHtml}
+        </div>
+        <div class="office-actions">
+          <a href="mailto:${o.email || ''}" aria-label="Email"><span class="material-symbols-outlined">mail</span></a>
+          <a href="tel:${show_phone}" aria-label="Call"><span class="material-symbols-outlined">call</span></a>
+        </div>`;
 
-  
-        
-</td>
-      `;
-
-      tbody.appendChild(row);
+      container.appendChild(row);
     });
   })
   .catch(err => {
-    document.querySelector("#officesTable tbody").innerHTML =
-      `<tr><td colspan="6" style="color:red;">Error loading offices: ${err.message}</td></tr>`;
+    document.getElementById('offices').innerHTML = `<p style="color:red">Error loading offices: ${err.message}</p>`;
   });
 </script>
 
