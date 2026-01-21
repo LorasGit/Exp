@@ -101,14 +101,13 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
 
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${o.name}</td>
-        <td>${o.hours || ""}</td>
-        <td>${o.location || ""}</td>
-        <td>
-          ${o.email ? `mailto:${o.email}${o.email}</a>` : ""}
+        <td>${o.name}<br />
+        ${o.hours || ""}<br />
+        ${o.location || ""}<br />
+        ${o.email || ""}<br />
+        ${show_phone}
+        ${linksHtml}
         </td>
-        <td class="phone">${show_phone}</td>
-        <td class="links">${linksHtml}</td>
       `;
 
       tbody.appendChild(row);
