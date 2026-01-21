@@ -62,7 +62,7 @@
       "name": "Financial Planning",
       "hours": "8:00 am-4:00 pm Monday-Friday",
       "location": "100 Keane",
-      "email": "kellie.connolly@loras.edu",
+      "email": "Kellie.Connolly@loras.edu",
       "area": "563",
       "prefix": "588",
       "line": "7136",
@@ -138,6 +138,20 @@
       "line": "7056",
       "label1": "Spiritual Life (InsideLoras)",
       "URL1": "https://lorasedu.sharepoint.com/SpiritualLife/SitePages/Spiritual-Life.aspx",
+      "label2": "",
+      "URL2": ""
+    },
+  {
+      "id": "e",
+      "name": "eLearn Support",
+      "hours": "8:00–4:30 Monday–Friday",
+      "location": "",
+      "email": "Robert.Adams@loras.edu",
+      "area": "",
+      "prefix": "",
+      "line": "",
+      "label1": "eLearn",
+      "URL1": "https://elearn.loras.edu/",
       "label2": "",
       "URL2": ""
     }
