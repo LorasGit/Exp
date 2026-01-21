@@ -2,56 +2,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>College Offices Directory</title>
-<style>
-body {font-family: Arial, sans-serif; margin:0; padding:0;}
-table {width:100%; border-collapse: collapse; font-size:14px;}
-th {background:#442D7D; color:#fff; padding:10px; text-align:left;}
-td {padding:8px 10px; border-bottom:1px solid #ddd; vertical-align:top;}
-tr:nth-child(even){background:#f7f7f7;}
-a {color:#442D7D; text-decoration:none;}
-a:hover {text-decoration:underline;}
-.links a{display:block; margin-bottom:4px;}
-</style>
+  <meta charset="UTF-8">
+  <title>Loras College Offices</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      background-color: #442D7D; /* Loras purple */
+      color: #ffffff;
+      padding: 10px;
+    }
+
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f7f7f7;
+    }
+
+    a {
+      color: #442D7D;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .links a {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .phone {
+      white-space: nowrap;
+    }
+  </style>
 </head>
+
 <body>
+
+<h2>Loras College Offices</h2>
+
 <table id="officesTable">
-<thead>
-<tr>
-<th>TESTName</th>
-<th>Hours</th>
-<th>Location</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody></tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Hours</th>
+      <th>Location</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Rows injected by JS -->
+  </tbody>
 </table>
 
 <script>
-fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json")
-  .then(res => {
-    console.log("HTTP status:", res.status);
-    return res.text();
-  })
-  .then(text => {
-    console.log("RAW TEXT:", text);
+fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no-store" })
+  .then(response => response.json())
+  .then(data => {
 
-    const raw = JSON.parse(text);
-    console.log("PARSED JSON:", raw);
-    console.log("TYPE:", typeof raw, "Array?", Array.isArray(raw));
+    // ✅ Correct path: { offices: [...] }
+    const offices = data.offices || [];
 
-    const data = Array.isArray(raw) ? raw : [raw];
-    console.log("DATA ARRAY:", data);
-    console.log("ROW COUNT:", data.length);
+    // Alphabetize by name
+    offices.sort((a, b) => a.name.localeCompare(b.name));
 
     const tbody = document.querySelector("#officesTable tbody");
-    tbody.innerHTML = "<tr><td colspan='6'>✅ Script ran</td></tr>";
 
-    data.forEach(item => {
-      console.log("ROW ITEM:", item);
+    offices.forEach(o => {
+
+      const phone = [o.area, o.prefix, o.line]
+        .filter(Boolean)
+        .join("-");
+
+      let linksHtml = "";
+
+      if (o.label1 && o.URL1) {
+        linksHtml += `${o.URL1}${o.label1}</a>`;
+      }
+
+      if (o.label2 && o.URL2) {
+        linksHtml += `${o.URL2}${o.label2}</a>`;
+      }
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${o.name}</td>
+        <td>${o.hours || ""}</td>
+        <td>${o.location || ""}</td>
+        <td>
+          ${o.email ? `mailto:${o.email}${o.email}</a>` : ""}
+        </td>
+        <td class="phone">${phone}</td>
+        <td class="links">${linksHtml}</td>
+      `;
+
+      tbody.appendChild(row);
+    });
+  })
+  .catch(err => {
+    document.querySelector("#officesTable tbody").innerHTML =
+      `<tr><td colspan="6" style="color:red;">Error loading offices: ${err.message}</td></tr>`;
+  });
+</script>
 
 </body>
 </html>
