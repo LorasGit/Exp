@@ -72,9 +72,9 @@
     },
     {
       "id": "info",
-      "name": "Info Desk & Campus Security",
-      "hours": "24/7",
-      "location": "Atrium ACC",
+      "name": "Info Desk",
+      "hours": "24/7 Atrium ACC",
+      "location": "",
       "email": "infoctr@loras.edu",
       "area": "563",
       "prefix": "588",
@@ -87,7 +87,7 @@
         {
       "id": "cs",
       "name": "Campus Security",
-      "hours": "24/7",
+      "hours": "24/7 Atrium ACC",
       "location": "",
       "email": "infoctr@loras.edu",
       "area": "563",
