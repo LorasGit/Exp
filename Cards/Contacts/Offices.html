@@ -16,11 +16,13 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      padding: 16px;
+      padding: 12px;
+      margin: 0;
     }
 
     h2 {
       margin-bottom: 12px;
+      font-size: 20px;
     }
 
     .office-row {
@@ -33,6 +35,7 @@
 
     .office-info {
       font-size: 14px;
+      line-height: 1.4;
     }
 
     .office-info h3 {
@@ -57,8 +60,8 @@
     }
 
     .office-actions a {
-      width: 40px;
-      height: 40px;
+      width: 44px; /* WCAG touch target */
+      height: 44px;
       background: #ffffff;
       border-radius: 50%;
       display: flex;
@@ -68,19 +71,22 @@
       text-decoration: none;
     }
 
-    /* Hover / focus outline like previous version */
     .office-actions a:hover,
-    .office-actions a:focus {
+    .office-actions a:focus-visible {
       outline: 3px solid var(--primary-color);
       outline-offset: 2px;
     }
 
     .material-symbols-outlined {
-      font-size: 20px;
+      font-size: 22px;
       color: var(--primary-color);
     }
 
     @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+
       .office-row {
         gap: 6px;
         padding: 8px 0;
@@ -89,15 +95,19 @@
       .office-info {
         font-size: 13px;
       }
+
+      h2 {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<h2>Loras College Offices</h2>
+<h2 id="page-title">Loras College Offices</h2>
 
-<div id="offices"></div>
+<div id="offices" role="list" aria-labelledby="page-title"></div>
 
 <script>
 fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no-store" })
@@ -112,25 +122,31 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
       let linksHtml = '';
 
       if (!o.label1 && o.URL1) o.label1 = o.URL1;
-      if (o.label1 && o.URL1) linksHtml += `<a href="${o.URL1}" target="_blank">${o.label1}</a>`;
+      if (o.label1 && o.URL1) linksHtml += `<a href="${o.URL1}" target="_blank" aria-label="${o.label1} for ${o.name}">${o.label1}</a>`;
 
       if (!o.label2 && o.URL2) o.label2 = o.URL2;
-      if (o.label2 && o.URL2) linksHtml += `<br /><a href="${o.URL2}" target="_blank">${o.label2}</a>`;
+      if (o.label2 && o.URL2) linksHtml += `<br /><a href="${o.URL2}" target="_blank" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
 
       const row = document.createElement('div');
       row.className = 'office-row';
+      row.setAttribute('role', 'listitem');
+
       row.innerHTML = `
         <div class="office-info">
           <h3>${o.name}</h3>
           ${o.hours || ''}<br />
           ${o.location || ''}<br />
-          ${o.email || ''}<br />
+          <a href="mailto:${o.email || ''}">${o.email || ''}</a><br />
           ${show_phone}<br />
           ${linksHtml}
         </div>
-        <div class="office-actions">
-          <a href="mailto:${o.email || ''}" aria-label="Email"><span class="material-symbols-outlined">mail</span></a>
-          <a href="tel:${show_phone}" aria-label="Call"><span class="material-symbols-outlined">call</span></a>
+        <div class="office-actions" aria-label="Actions for ${o.name}">
+          <a href="mailto:${o.email || ''}" aria-label="Email ${o.name}">
+            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+          </a>
+          <a href="tel:${show_phone}" aria-label="Call ${o.name}">
+            <span class="material-symbols-outlined" aria-hidden="true">call</span>
+          </a>
         </div>`;
 
       container.appendChild(row);
