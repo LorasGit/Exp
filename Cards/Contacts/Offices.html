@@ -59,16 +59,7 @@
 <h2>Loras College Offices</h2>
 
 <table id="officesTable">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Hours</th>
-      <th>Location</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Links</th>
-    </tr>
-  </thead>
+
   <tbody>
     <!-- Rows injected by JS -->
   </tbody>
@@ -79,7 +70,6 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
   .then(response => response.json())
   .then(data => {
 
-    // ✅ Correct path: { offices: [...] }
     const offices = data.offices || [];
 
     // Alphabetize by name
@@ -89,9 +79,15 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
 
     offices.forEach(o => {
 
-      const phone = [o.area, o.prefix, o.line]
+      const show_phone = [o.area, o.prefix, o.line]
         .filter(Boolean)
         .join("-");
+
+      
+   const tel_phone = ["+1", o.area, o.prefix, o.line]
+  .filter(Boolean)
+  .join("");
+
 
       let linksHtml = "";
 
@@ -111,7 +107,7 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
         <td>
           ${o.email ? `mailto:${o.email}${o.email}</a>` : ""}
         </td>
-        <td class="phone">${phone}</td>
+        <td class="phone">${show_phone}</td>
         <td class="links">${linksHtml}</td>
       `;
 
