@@ -14,6 +14,20 @@
       "label2": "",
       "URL2": ""
     },
+      {
+      "id": "reg",
+      "name": "Registrar's Office",
+      "hours": "9:00-5:00 Monday-Friday",
+      "location": "121 Keane Hall",
+      "email": "registrar@loras.edu",
+      "area": "563",
+      "prefix": "588",
+      "line": "7779",
+      "label1": "Academics & Registrar (InsideLoras)",
+      "URL1": "https://lorasedu.sharepoint.com/Academics/IQ/SitePages/Home.aspx",
+      "label2": "",
+      "URL2": ""
+    },
     {
       "id": "as",
       "name": "Academic Success",
@@ -28,20 +42,7 @@
       "label2": "Academic Supports",
       "URL2": "https://lorasedu.sharepoint.com/Academics/Supports/SitePages/Home.aspx"
     },
-    {
-      "id": "reg",
-      "name": "Registrar's Office",
-      "hours": "9:00-5:00 Monday-Friday",
-      "location": "121 Keane Hall",
-      "email": "registrar@loras.edu",
-      "area": "563",
-      "prefix": "588",
-      "line": "7779",
-      "label1": "Academics & Registrar (InsideLoras)",
-      "URL1": "https://lorasedu.sharepoint.com/Academics/IQ/SitePages/Home.aspx",
-      "label2": "",
-      "URL2": ""
-    },
+
     {
       "id": "sa",
       "name": "Student Accounts",
