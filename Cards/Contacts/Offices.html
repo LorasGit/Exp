@@ -27,20 +27,24 @@
 
     .office-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 52px 1fr; /* narrow left column for icons */
       gap: 8px;
       padding: 10px 0;
       border-bottom: 1px solid var(--primary-color);
+      align-items: start; /* top-align both columns */
     }
 
     .office-info {
       font-size: 14px;
       line-height: 1.4;
+      grid-column: 2; /* right column */
+      grid-row: 1;     /* same row as actions */
     }
 
     .office-info h3 {
       margin: 0 0 4px 0;
       font-size: 16px;
+      color: var(--primary-color); /* Make office name Loras purple */
     }
 
     a {
@@ -57,7 +61,9 @@
       grid-auto-rows: min-content;
       gap: 10px;
       justify-items: start;
-      justify-self: start; 
+      justify-self: start;
+      grid-column: 1; /* left column */
+      grid-row: 1;    /* same row as info */
     }
 
     .office-actions a {
@@ -120,13 +126,21 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
 
     offices.forEach(o => {
       const show_phone = [o.area, o.prefix, o.line].filter(Boolean).join('-');
-      let linksHtml = '';
 
+      // Build optional external links
+      let linksHtml = '';
       if (!o.label1 && o.URL1) o.label1 = o.URL1;
       if (o.label1 && o.URL1) linksHtml += `<a href="${o.URL1}" target="_blank" aria-label="${o.label1} for ${o.name}">${o.label1}</a>`;
-
       if (!o.label2 && o.URL2) o.label2 = o.URL2;
-      if (o.label2 && o.URL2) linksHtml += `<br /><a href="${o.URL2}" target="_blank" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
+      if (o.label2 && o.URL2) linksHtml += `${linksHtml ? '<br />' : ''}<a href="${o.URL2}" target="_blank" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
+
+      // Build the info block with no empty lines
+      const infoLines = [];
+      if (o.hours) infoLines.push(o.hours);
+      if (o.location) infoLines.push(o.location);
+      if (o.email) infoLines.push(`<a href="mailto:${o.email}">${o.email}</a>`);
+      if (show_phone) infoLines.push(show_phone);
+      if (linksHtml) infoLines.push(linksHtml);
 
       const row = document.createElement('div');
       row.className = 'office-row';
@@ -135,11 +149,7 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
       row.innerHTML = `
         <div class="office-info">
           <h3>${o.name}</h3>
-          ${o.hours || ''}<br />
-          ${o.location || ''}<br />
-          <a href="mailto:${o.email || ''}">${o.email || ''}</a><br />
-          ${show_phone}<br />
-          ${linksHtml}
+          ${infoLines.join('<br />')}
         </div>
         <div class="office-actions" aria-label="Actions for ${o.name}">
           <a href="mailto:${o.email || ''}" aria-label="Email ${o.name}">
@@ -154,7 +164,7 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
     });
   })
   .catch(err => {
-    document.getElementById('offices').innerHTML = `<p style="color:red">Error loading offices: ${err.message}</p>`;
+    document.getElementById('offices').innerHTML = `<p style=\"color:red\">Error loading offices: ${err.message}</p>`;
   });
 </script>
 
