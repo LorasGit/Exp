@@ -63,36 +63,38 @@
   const clearBtn = document.getElementById('clearBtn');
   const hint = document.getElementById('hint');
 
+  // nameMap left EXACTLY as your current page (no tags added). If you later add "|tag" to any string,
+  // search will match it, while display will only show the part before the pipe.
   const nameMap = {
-    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)",
-    "2": "Alumni Campus Center (ACC)",
+    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)|Library",
+    "2": "Alumni Campus Center (ACC)|student center food",
     "2A": "Cox Street Parking Lot",
-    "3": "Lynch-McCarthy Apartments (LMAC)",
+    "3": "Lynch-McCarthy Apartments (LMAC)|dorm",
     "4": "Beckman Hall",
-    "5": "Binz Hall",
-    "6": "Byrne Oaks Complex (BO)",
-    "7": "Christ the King Chapel (CTK)",
+    "5": "Binz Hall|dorm",
+    "6": "Byrne Oaks Complex (BO)|Dorm",
+    "7": "Christ the King Chapel (CTK)|Help Desk|Technology",
     "8": "Faber-Clark Soccer Field",
     "9": "Faber-Clark Softball Field",
     "10": "Fieldhouse",
     "11": "Graber Sports Center",
     "12": "Grotto",
-    "13": "Hennessy Hall",
+    "13": "Hennessy Hall|dorm",
     "13A": "Hennessy Hall Parking Lot",
     "14": "Hoffmann Hall",
     "14A": "Hoffmann Hall Parking Lot",
-    "15": "Keane Hall (Admission Office)",
+    "15": "Keane Hall|Admissions Business Office",
     "15A": "Keane Hall Parking/McClain Lot",
     "16": "Observatory",
     "17": "Physical Plant",
-    "18": "Einstein Bros. Bagels",
+    "18": "Einstein Bros. Bagels|Food",
     "19": "Heitkamp Planetarium",
     "20": "Rock Bowl Stadium",
-    "21": "Rohlman Hall",
+    "21": "Rohlman Hall|Dorm",
     "22": "San Jose Swimming Pool",
-    "23": "Smyth Hall",
+    "23": "Smyth Hall|Dorm",
     "24": "St. Joseph Chapel/Music Hall",
-    "25": "St. Joseph Hall of Science",
+    "25": "St. Joseph Hall of Science|Classrooms",
     "26": "Tucker Tennis Courts",
     "26A": "17th Street Parking Lot",
     "27": "Wahlert Hall",
@@ -102,7 +104,16 @@
     "30": "Belmont House"
   };
 
-  function displayNameFor(key){ return nameMap[key] ? `${nameMap[key]} (${key})` : `Building ${key}`; }
+  // --- NEW: visibleName shows only text before "|" ---
+  function visibleName(raw){
+    return String(raw||'').split('|')[0].trim();
+  }
+
+  function displayNameFor(key){
+    if(!nameMap[key]) return `Building ${key}`;
+    const shown = visibleName(nameMap[key]);
+    return `${shown} (${key})`;
+  }
 
   function drawMarker(key, x, y, r){
     const id = 'marker-' + key;
@@ -120,7 +131,8 @@
     t.textContent = key;
 
     const title = document.createElementNS('http://www.w3.org/2000/svg','title');
-    title.textContent = displayNameFor(key);
+    // tooltip uses visibleName
+    title.textContent = `${visibleName(nameMap[key]||'Building')} (${key})`;
 
     g.appendChild(title); g.appendChild(c); g.appendChild(t);
     markersG.appendChild(g);
@@ -143,7 +155,8 @@
     if(!list.length){ badgebar.innerHTML = '<span class="chip">No buildings selected</span>'; return; }
     // Natural-ish sort: numeric then suffix
     list.sort((a,b)=>{ const rx=/^([0-9]+)([A-Z]?)$/; const ma=a.match(rx), mb=b.match(rx); if(ma&&mb){ const na=+ma[1], nb=+mb[1]; if(na!==nb) return na-nb; return (ma[2]||'').localeCompare(mb[2]||''); } return a.localeCompare(b); });
-    badgebar.innerHTML = list.map(k => `<span class="chip"><b>${k}</b> ${displayNameFor(k)}</span>`).join('');
+    // chip uses visibleName
+    badgebar.innerHTML = list.map(k => `<span class="chip"><b>${k}</b> ${visibleName(nameMap[k]||'Building')}</span>`).join('');
   }
 
   function init(){
@@ -153,8 +166,6 @@
       img.setAttribute('width', probe.naturalWidth); img.setAttribute('height', probe.naturalHeight);
       let mapping = {}; try { mapping = JSON.parse(document.getElementById('overlay-mapping').textContent); } catch(e) { console.error('JSON parse', e); }
       for(const id in mapping){ const rec = mapping[id]; if(!rec) continue; const k = String(id).replace(/^marker-/i,'').toUpperCase(); const x=+rec.x, y=+rec.y, r=+rec.r||18; if(Number.isFinite(x)&&Number.isFinite(y)) drawMarker(k,x,y,r); }
-
-      // Removed: initial highlights via URL parameters. This variant is search-driven.
 
       // Click to toggle (disabled while search is active)
       markersG.addEventListener('click', (e)=>{
@@ -188,8 +199,11 @@
     // Determine which keys exist on the map (drawn)
     const drawnKeys = Array.from(markersG.querySelectorAll('g.marker')).map(g=>g.id.replace(/^marker-/i,'').toUpperCase());
 
-    // Case-insensitive substring match against the descriptive name
-    const matches = drawnKeys.filter(k => (nameMap[k]||'').toLowerCase().includes(q) || k.toLowerCase().includes(q));
+    // Case-insensitive substring match against the FULL string (before and after any "|")
+    const matches = drawnKeys.filter(k => {
+      const full = (nameMap[k]||'').toLowerCase();
+      return full.includes(q) || k.toLowerCase().includes(q);
+    });
 
     if(matches.length){
       hint.textContent = `${matches.length} match${matches.length!==1?'es':''} for "${term}"`;
