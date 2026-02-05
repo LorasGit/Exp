@@ -3,28 +3,60 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Interactive Loras Campus Map — Search</title>
+<title>Interactive Loras Campus Map — Search (Semantic Colors)</title>
 <style>
-  :root { --red:#FFF700; --red-dark:#000; --ink:#222; --bg:#fff; --shadow:0 4px 16px rgba(0,0,0,.1); --pill:#f0f2f5; }
-  body{ margin:0; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:#f7f7f9; }
-  .wrap{ width:100%; height:100vh; background:#fafafa; position:relative; }
+  /* Correct, semantically named color variables */
+  :root {
+    --highlight:#FFF700;          /* marker highlight fill (yellow) */
+    --highlight-border:#000000;   /* highlight stroke */
+    --text:#222222;               /* primary text color */
+    --surface:#ffffff;            /* surfaces: toolbar, badges */
+    --shadow:0 4px 16px rgba(0,0,0,.1);
+    --badge-bg:#f0f2f5;           /* hint bubble background */
+  }
+
+  body{ margin:0; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; color:var(--text); background:#f7f7f9; }
+
+  /* Layout: toolbar + badges above the map so they don't cover it */
+  .wrap{
+    width:100%;
+    height:100vh;
+    background:#fafafa;
+    display:grid;
+    grid-template-rows:auto auto 1fr; /* toolbar, badgebar, map */
+    grid-template-columns: 1fr;
+  }
+
+  /* SVG should fill the remaining space */
   svg{ width:100%; height:100%; display:block; }
+
   g.marker { cursor: pointer; }
   g.marker circle{ fill:#fff; stroke:#000; stroke-width:1.25; }
   g.marker text{ fill:#111; font-weight:700; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; pointer-events:none; }
-  g.marker.highlight circle{ fill:var(--red) !important; stroke:var(--red-dark) !important; stroke-width:3 !important; filter: drop-shadow(0 0 6px rgba(255,247,0,.55)); }
+  g.marker.highlight circle{ fill:var(--highlight) !important; stroke:var(--highlight-border) !important; stroke-width:3 !important; filter: drop-shadow(0 0 6px rgba(255,247,0,.55)); }
   g.marker.highlight text{ fill:#000; }
 
-  /* Search toolbar */
-  .toolbar{ position:absolute; top:16px; left:16px; right:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--bg); border-radius:12px; box-shadow:var(--shadow); }
+  /* Search toolbar (no longer absolute) */
+  .toolbar{
+    position:static;
+    margin:16px;
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    padding:10px 12px; background:var(--surface); border-radius:12px; box-shadow:var(--shadow);
+  }
   .searchbox{ position:relative; flex:1 1 320px; min-width:220px; }
   .searchbox input{ width:100%; box-sizing:border-box; padding:10px 36px 10px 12px; border-radius:10px; border:1px solid #d0d7de; background:#fff; font-size:15px; }
   .searchbox button.clear{ position:absolute; right:6px; top:50%; transform:translateY(-50%); border:0; background:transparent; width:28px; height:28px; border-radius:50%; font-size:18px; line-height:1; cursor:pointer; color:#666; }
   .searchbox button.clear:hover{ background:#f0f0f0; }
-  .hint{ font-size:13px; color:#555; background:var(--pill); padding:6px 10px; border-radius:999px; }
+  .hint{ font-size:13px; color:#555; background:var(--badge-bg); padding:6px 10px; border-radius:999px; }
 
-  /* Floating pill that lists highlighted buildings */
-  .badgebar{ position:absolute; top:74px; left:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--bg); border-radius:10px; box-shadow:var(--shadow); max-width:min(92vw, 1200px); }
+  /* Badge bar (no longer absolute) */
+  .badgebar{
+    position:static;
+    margin:0 16px 16px 16px; /* below toolbar, above map */
+    display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    padding:10px 12px; background:var(--surface); border-radius:10px; box-shadow:var(--shadow);
+    max-width:min(92vw, 1200px);
+  }
   .chip{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#fff3f3; color:#7a0000; border:1px solid #ffd1d1; font-size:14px; line-height:1; }
   .chip b{ font-weight:700; }
 
@@ -104,15 +136,8 @@
     "30": "Belmont House"
   };
 
-  // --- NEW: visibleName shows only text before "|" ---
   function visibleName(raw){
     return String(raw||'').split('|')[0].trim();
-  }
-
-  function displayNameFor(key){
-    if(!nameMap[key]) return `Building ${key}`;
-    const shown = visibleName(nameMap[key]);
-    return `${shown} (${key})`;
   }
 
   function drawMarker(key, x, y, r){
@@ -131,7 +156,6 @@
     t.textContent = key;
 
     const title = document.createElementNS('http://www.w3.org/2000/svg','title');
-    // tooltip uses visibleName
     title.textContent = `${visibleName(nameMap[key]||'Building')} (${key})`;
 
     g.appendChild(title); g.appendChild(c); g.appendChild(t);
@@ -153,10 +177,8 @@
   function renderBadgebar(keys){
     const list = (keys && keys.length ? keys : getHighlightedKeys()).slice();
     if(!list.length){ badgebar.innerHTML = '<span class="chip">No buildings selected</span>'; return; }
-    // Natural-ish sort: numeric then suffix
     list.sort((a,b)=>{ const rx=/^([0-9]+)([A-Z]?)$/; const ma=a.match(rx), mb=b.match(rx); if(ma&&mb){ const na=+ma[1], nb=+mb[1]; if(na!==nb) return na-nb; return (ma[2]||'').localeCompare(mb[2]||''); } return a.localeCompare(b); });
-    // chip uses visibleName
-    badgebar.innerHTML = list.map(k => `<span class="chip"><b>${k}</b> ${visibleName(nameMap[k]||'Building')}</span>`).join('');
+    badgebar.innerHTML = list.map(k => `<span class=\"chip\"><b>${k}</b> ${visibleName(nameMap[k]||'Building')}</span>`).join('');
   }
 
   function init(){
@@ -167,7 +189,6 @@
       let mapping = {}; try { mapping = JSON.parse(document.getElementById('overlay-mapping').textContent); } catch(e) { console.error('JSON parse', e); }
       for(const id in mapping){ const rec = mapping[id]; if(!rec) continue; const k = String(id).replace(/^marker-/i,'').toUpperCase(); const x=+rec.x, y=+rec.y, r=+rec.r||18; if(Number.isFinite(x)&&Number.isFinite(y)) drawMarker(k,x,y,r); }
 
-      // Click to toggle (disabled while search is active)
       markersG.addEventListener('click', (e)=>{
         if(searchInput.value.trim() !== '') return; // ignore clicks during active search
         const g = e.target.closest('g.marker'); if(!g) return; const k = g.id.replace(/^marker-/i,'').toUpperCase();
@@ -181,25 +202,22 @@
     probe.src = img.getAttribute('href') + '?v=' + Date.now();
   }
 
-  /* --- Search logic --- */
   function debounce(fn, ms){ let t; return function(...args){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), ms); }; }
 
   function searchAndHighlight(term){
     const q = term.trim().toLowerCase();
-    const container = svg; // we toggle a class here to change cursor/behavior
+    const container = svg;
     if(q === ''){
       container.classList.remove('clicks-disabled');
       hint.textContent = 'Type to highlight buildings whose names/descriptions match.';
-      renderBadgebar(); // keep current manual highlights
+      renderBadgebar();
       return;
     }
 
     container.classList.add('clicks-disabled');
 
-    // Determine which keys exist on the map (drawn)
     const drawnKeys = Array.from(markersG.querySelectorAll('g.marker')).map(g=>g.id.replace(/^marker-/i,'').toUpperCase());
 
-    // Case-insensitive substring match against the FULL string (before and after any "|")
     const matches = drawnKeys.filter(k => {
       const full = (nameMap[k]||'').toLowerCase();
       return full.includes(q) || k.toLowerCase().includes(q);
