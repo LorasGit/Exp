@@ -128,7 +128,8 @@ const nameMap = {
     if(!keys.length){ badgebar.innerHTML = '<span class="chip">No buildings selected</span>'; return; }
     // Natural-ish sort: numeric then suffix
     keys.sort((a,b)=>{ const rx=/^([0-9]+)([A-Z]?)$/; const ma=a.match(rx), mb=b.match(rx); if(ma&&mb){ const na=+ma[1], nb=+mb[1]; if(na!==nb) return na-nb; return (ma[2]||'').localeCompare(mb[2]||''); } return a.localeCompare(b); });
-    badgebar.innerHTML = keys.map(k => `<span class="chip"><b>${k}</b> ${displayNameFor(k)}</span>`).join('');
+    //badgebar.innerHTML = keys.map(k => `<span class="chip"><b>${k}</b> ${displayNameFor(k)}</span>`).join('');
+    badgebar.innerHTML = keys.map(k => `<span class="chip">${displayNameFor(k)}</span>`).join('');
   }
 
   function init(){
