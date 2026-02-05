@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Loras Campus Map — Search</title>
+<style>
+  :root { --red:#FF2B2B; --red-dark:#B00000; --ink:#222; --bg:#fff; --shadow:0 4px 16px rgba(0,0,0,.1); --pill:#f0f2f5; }
+  body{ margin:0; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:#f7f7f9; }
+  .wrap{ width:100%; height:100vh; background:#fafafa; position:relative; }
+  svg{ width:100%; height:100%; display:block; }
+  g.marker { cursor: pointer; }
+  g.marker circle{ fill:#fff; stroke:#000; stroke-width:1.25; }
+  g.marker text{ fill:#111; font-weight:700; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; pointer-events:none; }
+  g.marker.highlight circle{ fill:var(--red) !important; stroke:var(--red-dark) !important; stroke-width:3 !important; filter: drop-shadow(0 0 6px rgba(176,0,0,.55)); }
+  g.marker.highlight text{ fill:#fff; }
+
+  /* Search toolbar */
+  .toolbar{ position:absolute; top:16px; left:16px; right:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--bg); border-radius:12px; box-shadow:var(--shadow); }
+  .searchbox{ position:relative; flex:1 1 320px; min-width:220px; }
+  .searchbox input{ width:100%; box-sizing:border-box; padding:10px 36px 10px 12px; border-radius:10px; border:1px solid #d0d7de; background:#fff; font-size:15px; }
+  .searchbox button.clear{ position:absolute; right:6px; top:50%; transform:translateY(-50%); border:0; background:transparent; width:28px; height:28px; border-radius:50%; font-size:18px; line-height:1; cursor:pointer; color:#666; }
+  .searchbox button.clear:hover{ background:#f0f0f0; }
+  .hint{ font-size:13px; color:#555; background:var(--pill); padding:6px 10px; border-radius:999px; }
+
+  /* Floating pill that lists highlighted buildings */
+  .badgebar{ position:absolute; top:74px; left:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--bg); border-radius:10px; box-shadow:var(--shadow); max-width:min(92vw, 1200px); }
+  .chip{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#fff3f3; color:#7a0000; border:1px solid #ffd1d1; font-size:14px; line-height:1; }
+  .chip b{ font-weight:700; }
+
+  /* When search is active, disable clicking */
+  .clicks-disabled g.marker{ cursor:not-allowed; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar" role="region" aria-label="Map search">
+    <div class="searchbox">
+      <input id="search" type="search" placeholder="Search buildings (e.g., parking, hall, chapel)" aria-label="Search buildings" autocomplete="off" />
+      <button id="clearBtn" class="clear" aria-label="Clear search" title="Clear search">×</button>
+    </div>
+    <div id="hint" class="hint" aria-live="polite">Type to highlight buildings whose names/descriptions match.</div>
+  </div>
+
+  <div id="badgebar" class="badgebar" aria-live="polite" aria-label="Highlighted buildings"></div>
+
+  <svg id="mapSvg" role="img" aria-label="Loras College Campus Map">
+    <title>Loras College Campus Map</title>
+    <image id="baseImg" x="0" y="0" href="map.png" width="100" height="100" preserveAspectRatio="xMidYMid meet" />
+    <g id="markers"></g>
+  </svg>
+</div>
+
+<script id="overlay-mapping" type="application/json">{"marker-1":{"x":944.41,"y":356.71,"r":18},"marker-2":{"x":779.65,"y":293.01,"r":18},"marker-3":{"x":634.42,"y":70.49,"r":18},"marker-4":{"x":744.83,"y":122.3,"r":18},"marker-5":{"x":668.39,"y":104.46,"r":18},"marker-6":{"x":81.52,"y":433.14,"r":18},"marker-7":{"x":834.0,"y":468.81,"r":18},"marker-8":{"x":784.74,"y":232.71,"r":18},"marker-9":{"x":673.48,"y":197.04,"r":18},"marker-10":{"x":684.53,"y":468.81,"r":18},"marker-11":{"x":300.64,"y":350.76,"r":18},"marker-12":{"x":636.96,"y":332.93,"r":18},"marker-13":{"x":525.71,"y":511.28,"r":18},"marker-14":{"x":824.66,"y":148.63,"r":18},"marker-15":{"x":966.49,"y":456.07,"r":18},"marker-15A":{"x":1068.41,"y":601.3,"r":18},"marker-16":{"x":599.6,"y":200.43,"r":18},"marker-17":{"x":813.62,"y":266.68,"r":18},"marker-18":{"x":894.3,"y":264.98,"r":18},"marker-19":{"x":775.4,"y":450.13,"r":18},"marker-20":{"x":457.76,"y":389.83,"r":18},"marker-21":{"x":272.62,"y":426.35,"r":18},"marker-22":{"x":172.4,"y":355.01,"r":18},"marker-23":{"x":621.68,"y":282.82,"r":18},"marker-24":{"x":860.33,"y":189.39,"r":18},"marker-25":{"x":328.67,"y":590.26,"r":18},"marker-26":{"x":514.67,"y":248.0,"r":18},"marker-27":{"x":738.88,"y":371.99,"r":18},"marker-28":{"x":659.9,"y":249.69,"r":18},"marker-29":{"x":636.96,"y":410.21,"r":18},"marker-30":{"x":1142.3,"y":462.02,"r":18},"marker-2A":{"x":889.21,"y":304.05,"r":18},"marker-14A":{"x":825.51,"y":125.7,"r":18},"marker-28A":{"x":562.23,"y":230.16,"r":18},"marker-25A":{"x":436.53,"y":270.93,"r":18},"marker-13A":{"x":482.39,"y":556.29,"r":18}}</script>
+
+<script>
+(function(){
+  const svg = document.getElementById('mapSvg');
+  const img = document.getElementById('baseImg');
+  const markersG = document.getElementById('markers');
+  const badgebar = document.getElementById('badgebar');
+  const searchInput = document.getElementById('search');
+  const clearBtn = document.getElementById('clearBtn');
+  const hint = document.getElementById('hint');
+
+  const nameMap = {
+    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)",
+    "2": "Alumni Campus Center (ACC)",
+    "2A": "Cox Street Parking Lot",
+    "3": "Lynch-McCarthy Apartments (LMAC)",
+    "4": "Beckman Hall",
+    "5": "Binz Hall",
+    "6": "Byrne Oaks Complex (BO)",
+    "7": "Christ the King Chapel (CTK)",
+    "8": "Faber-Clark Soccer Field",
+    "9": "Faber-Clark Softball Field",
+    "10": "Fieldhouse",
+    "11": "Graber Sports Center",
+    "12": "Grotto",
+    "13": "Hennessy Hall",
+    "13A": "Hennessy Hall Parking Lot",
+    "14": "Hoffmann Hall",
+    "14A": "Hoffmann Hall Parking Lot",
+    "15": "Keane Hall (Admission Office)",
+    "15A": "Keane Hall Parking/McClain Lot",
+    "16": "Observatory",
+    "17": "Physical Plant",
+    "18": "Einstein Bros. Bagels",
+    "19": "Heitkamp Planetarium",
+    "20": "Rock Bowl Stadium",
+    "21": "Rohlman Hall",
+    "22": "San Jose Swimming Pool",
+    "23": "Smyth Hall",
+    "24": "St. Joseph Chapel/Music Hall",
+    "25": "St. Joseph Hall of Science",
+    "26": "Tucker Tennis Courts",
+    "26A": "17th Street Parking Lot",
+    "27": "Wahlert Hall",
+    "28": "Athletic &amp; Wellness Center (AWC)",
+    "28A": "AWC Parking Lot",
+    "29": "Alumni Plaza",
+    "30": "Belmont House"
+  };
+
+  function displayNameFor(key){ return nameMap[key] ? `${nameMap[key]} (${key})` : `Building ${key}`; }
+
+  function drawMarker(key, x, y, r){
+    const id = 'marker-' + key;
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('id', id);
+    g.setAttribute('class','marker');
+
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r||18);
+
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('dominant-baseline','middle'); t.setAttribute('text-anchor','middle');
+    const fs = Math.max(10, (r||18) * 0.9); t.setAttribute('font-size', fs);
+    t.textContent = key;
+
+    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent = displayNameFor(key);
+
+    g.appendChild(title); g.appendChild(c); g.appendChild(t);
+    markersG.appendChild(g);
+    return g;
+  }
+
+  function getHighlightedKeys(){
+    return Array.from(document.querySelectorAll('g.marker.highlight'))
+      .map(g => g.id.replace(/^marker-/i,'').toUpperCase());
+  }
+
+  function setHighlighted(keys){
+    svg.querySelectorAll('g.marker.highlight').forEach(g=>g.classList.remove('highlight'));
+    (keys||[]).forEach(k=>{ const g = document.getElementById('marker-'+k); if(g) g.classList.add('highlight'); });
+    renderBadgebar(keys);
+  }
+
+  function renderBadgebar(keys){
+    const list = (keys && keys.length ? keys : getHighlightedKeys()).slice();
+    if(!list.length){ badgebar.innerHTML = '<span class="chip">No buildings selected</span>'; return; }
+    // Natural-ish sort: numeric then suffix
+    list.sort((a,b)=>{ const rx=/^([0-9]+)([A-Z]?)$/; const ma=a.match(rx), mb=b.match(rx); if(ma&&mb){ const na=+ma[1], nb=+mb[1]; if(na!==nb) return na-nb; return (ma[2]||'').localeCompare(mb[2]||''); } return a.localeCompare(b); });
+    badgebar.innerHTML = list.map(k => `<span class="chip"><b>${k}</b> ${displayNameFor(k)}</span>`).join('');
+  }
+
+  function init(){
+    const probe = new Image();
+    probe.onload = () =>{
+      svg.setAttribute('viewBox', `0 0 ${probe.naturalWidth} ${probe.naturalHeight}`);
+      img.setAttribute('width', probe.naturalWidth); img.setAttribute('height', probe.naturalHeight);
+      let mapping = {}; try { mapping = JSON.parse(document.getElementById('overlay-mapping').textContent); } catch(e) { console.error('JSON parse', e); }
+      for(const id in mapping){ const rec = mapping[id]; if(!rec) continue; const k = String(id).replace(/^marker-/i,'').toUpperCase(); const x=+rec.x, y=+rec.y, r=+rec.r||18; if(Number.isFinite(x)&&Number.isFinite(y)) drawMarker(k,x,y,r); }
+
+      // Removed: initial highlights via URL parameters. This variant is search-driven.
+
+      // Click to toggle (disabled while search is active)
+      markersG.addEventListener('click', (e)=>{
+        if(searchInput.value.trim() !== '') return; // ignore clicks during active search
+        const g = e.target.closest('g.marker'); if(!g) return; const k = g.id.replace(/^marker-/i,'').toUpperCase();
+        g.classList.toggle('highlight');
+        renderBadgebar();
+      });
+
+      wireSearch();
+    };
+    probe.onerror = () =>{ console.error('map.png failed to load'); };
+    probe.src = img.getAttribute('href') + '?v=' + Date.now();
+  }
+
+  /* --- Search logic --- */
+  function debounce(fn, ms){ let t; return function(...args){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), ms); }; }
+
+  function searchAndHighlight(term){
+    const q = term.trim().toLowerCase();
+    const container = svg; // we toggle a class here to change cursor/behavior
+    if(q === ''){
+      container.classList.remove('clicks-disabled');
+      hint.textContent = 'Type to highlight buildings whose names/descriptions match.';
+      renderBadgebar(); // keep current manual highlights
+      return;
+    }
+
+    container.classList.add('clicks-disabled');
+
+    // Determine which keys exist on the map (drawn)
+    const drawnKeys = Array.from(markersG.querySelectorAll('g.marker')).map(g=>g.id.replace(/^marker-/i,'').toUpperCase());
+
+    // Case-insensitive substring match against the descriptive name
+    const matches = drawnKeys.filter(k => (nameMap[k]||'').toLowerCase().includes(q) || k.toLowerCase().includes(q));
+
+    if(matches.length){
+      hint.textContent = `${matches.length} match${matches.length!==1?'es':''} for "${term}"`;
+    } else {
+      hint.textContent = `No matches for "${term}"`;
+    }
+
+    setHighlighted(matches);
+  }
+
+  function wireSearch(){
+    const run = debounce(()=> searchAndHighlight(searchInput.value), 120);
+    searchInput.addEventListener('input', run);
+    clearBtn.addEventListener('click', ()=>{ searchInput.value=''; searchInput.focus(); searchAndHighlight(''); });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
