@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1189 685">
   <style>
-    /* Make all circle fills 20% transparent (i.e., 80% opacity) */
-    .marker circle { fill-opacity: 0.8; }
+    /* Make all circle fills 60% transparent (i.e., 40% opacity) */
+    .marker circle { fill-opacity: 0.4; }
   </style>
 
   <g id="marker-1" class="marker"><circle cx="944.41" cy="356.71" r="18"></circle></g>
