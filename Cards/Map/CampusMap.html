@@ -36,8 +36,16 @@
   const markersG = document.getElementById('markers');
   const badgebar = document.getElementById('badgebar');
 
-  // Optional: building names (key = '1', '14A', etc.)
-  const nameMap = { };
+
+const nameMap = {
+  "1": "Bill and JoAnne Miller Academic Resource Center (MARC)",
+  "2": "Alumni Campus Center (ACC)",
+  "2a": "Cox Street Parking Lot",
+  "3": "Lynch-McCarthy Apartments (LMAC)",
+  "4": "Beckman Hall,
+  "5": "Binz Hall"
+};
+
 
   function normVal(s){ return String(s||'').trim().toUpperCase(); }
   function isKey(s){ return /^[0-9]+[A-Z]?$/.test(s); }
