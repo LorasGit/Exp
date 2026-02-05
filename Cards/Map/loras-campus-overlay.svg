@@ -18,8 +18,8 @@
   <g id="marker-11" class="marker"><circle cx="300.64" cy="350.76" r="18"></circle></g>
   <g id="marker-12" class="marker"><circle cx="636.96" cy="332.93" r="18"></circle></g>
   <g id="marker-13" class="marker"><circle cx="525.71" cy="511.28" r="18"></circle></g>
-
-  <!-- Keep everything else in the same order -->
+  <g id="marker-14A" class="marker"><circle cx="825.51" cy="125.70" r="18"></circle></g> /*lower than overlapping 14 due to order */
+  <g id="marker-14" class="marker"><circle cx="824.66" cy="148.63" r="18"></circle></g>  
   <g id="marker-15" class="marker"><circle cx="966.49" cy="456.07" r="18"></circle></g>
   <g id="marker-15A" class="marker"><circle cx="1068.41" cy="601.30" r="18"></circle></g>
   <g id="marker-16" class="marker"><circle cx="599.60" cy="200.43" r="18"></circle></g>
@@ -39,10 +39,7 @@
   <g id="marker-30" class="marker"><circle cx="1142.30" cy="462.02" r="18"></circle></g>
   <g id="marker-2A" class="marker"><circle cx="889.21" cy="304.05" r="18"></circle></g>
 
-  <!-- 14A below... -->
-  <g id="marker-14A" class="marker"><circle cx="825.51" cy="125.70" r="18"></circle></g>
-  <!-- ...and marker-14 AFTER it so it paints on top -->
-  <g id="marker-14" class="marker"><circle cx="824.66" cy="148.63" r="18"></circle></g>
+ 
 
   <g id="marker-28A" class="marker"><circle cx="562.23" cy="230.16" r="18"></circle></g>
   <g id="marker-25A" class="marker"><circle cx="436.53" cy="270.93" r="18"></circle></g>
