@@ -1,7 +1,9 @@
-/* This FILE IS NOT USED it is imbedded in the HTML */
+
 
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1189 685">
+/* This FILE IS NOT USED it is imbedded in the HTML */
+  
   <style>
     /* Make all circle fills 60% transparent (i.e., 40% opacity) This is actually ignored and that's good because the image numbers would show through*/
     .marker circle { fill-opacity: 0.4; }
