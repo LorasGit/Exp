@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Interactive Loras Campus Map — Search (Semantic Colors)</title>
+<title>Interactive Loras Campus Map</title>
 <style>
   /* Correct, semantically named color variables */
   :root {
@@ -36,7 +36,7 @@
   g.marker.highlight circle{ fill:var(--highlight) !important; stroke:var(--highlight-border) !important; stroke-width:3 !important; filter: drop-shadow(0 0 6px rgba(255,247,0,.55)); }
   g.marker.highlight text{ fill:#000; }
 
-  /* Search toolbar (no longer absolute) */
+  /* Search toolbar */
   .toolbar{
     position:static;
     margin:16px;
@@ -49,7 +49,7 @@
   .searchbox button.clear:hover{ background:#f0f0f0; }
   .hint{ font-size:13px; color:#555; background:var(--badge-bg); padding:6px 10px; border-radius:999px; }
 
-  /* Badge bar (no longer absolute) */
+  /* Badge bar */
   .badgebar{
     position:static;
     margin:0 16px 16px 16px; /* below toolbar, above map */
@@ -133,8 +133,7 @@
   const clearBtn = document.getElementById('clearBtn');
   const hint = document.getElementById('hint');
 
-  // nameMap left EXACTLY as your current page (no tags added). If you later add "|tag" to any string,
-  // search will match it, while display will only show the part before the pipe.
+  // Visible building names + | + hidden tags, whole string is searched
   const nameMap = {
     "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)|Library Spirt store Book",
     "2": "Alumni Campus Center (ACC)|student center food pub cafe cafeteria bar",
