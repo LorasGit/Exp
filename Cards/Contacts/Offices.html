@@ -2,17 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loras College Offices</title>
+  <title>Loras College Offices (3-column with Right Map Button)</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
   <style>
-    :root {
-      --primary-color: #442D7D; /* Loras purple */
-    }
+    :root { --primary-color: #442D7D; }
 
     body {
       font-family: 'Roboto', sans-serif;
@@ -20,42 +18,31 @@
       margin: 0;
     }
 
-    h2 {
-      margin-bottom: 12px;
-      font-size: 20px;
-    }
+    h2 { margin-bottom: 12px; font-size: 20px; }
 
+    /* Three-column layout: icons | info | map */
     .office-row {
       display: grid;
-      grid-template-columns: 52px 1fr; /* narrow left column for icons */
+      grid-template-columns: 52px 1fr 52px; /* left icons, middle info, right map */
       gap: 8px;
       padding: 10px 0;
       border-bottom: 1px solid var(--primary-color);
-      align-items: start; /* top-align both columns */
+      align-items: start;
     }
 
     .office-info {
       font-size: 14px;
       line-height: 1.4;
-      grid-column: 2; /* right column */
-      grid-row: 1;     /* same row as actions */
+      grid-column: 2; /* middle column */
+      grid-row: 1;    /* align with action columns */
     }
 
-    .office-info h3 {
-      margin: 0 0 4px 0;
-      font-size: 16px;
-      color: var(--primary-color); /* Make office name Loras purple */
-    }
+    .office-info h3 { margin: 0 0 4px 0; font-size: 16px; color: var(--primary-color); }
 
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
+    a { color: var(--primary-color); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    a:hover {
-      text-decoration: underline;
-    }
-
+    /* Left actions (email, phone) */
     .office-actions {
       display: grid;
       grid-auto-rows: min-content;
@@ -63,57 +50,49 @@
       justify-items: start;
       justify-self: start;
       grid-column: 1; /* left column */
-      grid-row: 1;    /* same row as info */
+      grid-row: 1;
     }
 
-    .office-actions a {
-      width: 44px; /* WCAG touch target */
-      height: 44px;
+    /* Right map action */
+    .office-map {
+      display: grid;
+      grid-auto-rows: min-content;
+      gap: 10px;
+      justify-items: end;   /* push chip to the right edge of the column */
+      justify-self: end;
+      grid-column: 3; /* right column */
+      grid-row: 1;
+    }
+
+    /* Shared chip styling */
+    .office-actions a, .office-map a {
+      width: 44px; height: 44px;
       background: #ffffff;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       text-decoration: none;
     }
-
-    .office-actions a:hover,
-    .office-actions a:focus-visible {
+    .office-actions a:hover, .office-actions a:focus-visible,
+    .office-map a:hover, .office-map a:focus-visible {
       outline: 3px solid var(--primary-color);
       outline-offset: 2px;
+      text-decoration: none;
     }
 
-    .material-symbols-outlined {
-      font-size: 22px;
-      color: var(--primary-color);
-    }
+    .material-symbols-outlined { font-size: 22px; color: var(--primary-color); }
 
     @media (max-width: 480px) {
-      body {
-        padding: 8px;
-      }
-
-      .office-row {
-        gap: 6px;
-        padding: 8px 0;
-      }
-
-      .office-info {
-        font-size: 13px;
-      }
-
-      h2 {
-        font-size: 18px;
-      }
+      body { padding: 8px; }
+      .office-row { gap: 6px; padding: 8px 0; }
+      .office-info { font-size: 13px; }
+      h2 { font-size: 18px; }
     }
   </style>
 </head>
-
 <body>
 
 <h2 id="page-title">Loras College Offices</h2>
-
 <div id="offices" role="list" aria-labelledby="page-title"></div>
 
 <script>
@@ -125,11 +104,15 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
     const container = document.getElementById('offices');
 
     offices.forEach(o => {
-      // Build normalized phone display (supports either split fields or a single phone field)
+      // Normalize phone (supports split fields or single field)
       const rawPhone = o.phone || [o.area, o.prefix, o.line].filter(Boolean).join('-');
       const show_phone = (rawPhone || '').replace(/\s+/g, '').replace(/-+$/,'');
 
-      // Build optional external links
+      // Campus map link using `o.map`
+      const campusMapBase = 'https://lorasgit.github.io/Exp/Cards/Map/CampusMap.html?b=';
+      const campusMapURL = o.map ? campusMapBase + encodeURIComponent(o.map) : '';
+
+      // Optional external links
       let linksHtml = '';
       if (!o.label1 && o.URL1) o.label1 = o.URL1;
       if (o.label1 && o.URL1) {
@@ -140,7 +123,7 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
         linksHtml += `${linksHtml ? '<br />' : ''}<a href="${o.URL2}" target="_blank" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
       }
 
-      // Build the info block with no empty lines
+      // Info block (no empty lines)
       const infoLines = [];
       if (o.hours) infoLines.push(o.hours);
       if (o.location) infoLines.push(o.location);
@@ -153,10 +136,6 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
       row.setAttribute('role', 'listitem');
 
       row.innerHTML = `
-        <div class="office-info">
-          <h3>${o.name}</h3>
-          ${infoLines.join('<br />')}
-        </div>
         <div class="office-actions" aria-label="Actions for ${o.name}">
           ${o.email ? `
             <a href="mailto:${o.email}" aria-label="Email ${o.name}">
@@ -166,6 +145,17 @@ fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no
           ${show_phone ? `
             <a href="tel:${show_phone}" aria-label="Call ${o.name}">
               <span class="material-symbols-outlined" aria-hidden="true">call</span>
+            </a>
+          ` : ''}
+        </div>
+        <div class="office-info">
+          <h3>${o.name}</h3>
+          ${infoLines.join('<br />')}
+        </div>
+        <div class="office-map" aria-label="Map for ${o.name}">
+          ${campusMapURL ? `
+            <a href="${campusMapURL}" target="_blank" rel="noopener" aria-label="Open campus map for ${o.name}">
+              <span class="material-symbols-outlined" aria-hidden="true">map</span>
             </a>
           ` : ''}
         </div>`;
