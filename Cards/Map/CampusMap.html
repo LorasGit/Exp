@@ -1,0 +1,514 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Loras Campus Map</title>
+<style>
+  :root {
+    --highlight:#FFF700;          /* marker & entrance highlight fill (yellow) */
+    --highlight-border:#000000;   /* highlight stroke */
+    --text:#222222;               /* primary text color */
+    --surface:#ffffff;            /* surfaces: toolbar, badges */
+    --shadow:0 4px 16px rgba(0,0,0,.1);
+    --badge-bg:#f0f2f5;           /* hint bubble background */
+  }
+
+  body{ margin:0; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; color:var(--text); background:#f7f7f9; }
+
+  .wrap{ width:100%; height:100vh; background:#fafafa; display:grid; grid-template-rows:auto auto 1fr; grid-template-columns: 1fr; }
+  svg{ width:100%; height:100%; display:block; }
+
+  g.marker { cursor: pointer; }
+  g.marker circle{ fill:#fff; stroke:#000; stroke-width:1.25; }
+  g.marker text{ fill:#111; font-weight:700; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; pointer-events:none; }
+  g.marker.highlight circle{ fill:var(--highlight) !important; stroke:var(--highlight-border) !important; stroke-width:3 !important; filter: drop-shadow(0 0 6px rgba(255,247,0,.55)); }
+  g.marker.highlight text{ fill:#000; }
+
+  .toolbar{ position:static; margin:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--surface); border-radius:12px; box-shadow:var(--shadow); }
+  .searchbox{ position:relative; flex:1 1 320px; min-width:220px; display:flex; gap:8px; }
+  .searchbox .fieldwrap{ position:relative; flex:1 1 auto; }
+  .searchbox input{ width:100%; box-sizing:border-box; padding:10px 36px 10px 12px; border-radius:10px; border:1px solid #d0d7de; background:#fff; font-size:15px; }
+  .searchbox button.clear{ position:absolute; right:6px; top:50%; transform:translateY(-50%); border:0; background:transparent; width:28px; height:28px; border-radius:50%; font-size:18px; line-height:1; cursor:pointer; color:#666; }
+  .searchbox button.clear:hover{ background:#f0f0f0; }
+  .searchbox button.clear-marks{ border:1px solid #d0d7de; background:#fff; border-radius:10px; padding:8px 12px; font-size:14px; cursor:pointer; }
+  .searchbox button.clear-marks:hover{ background:#f0f0f0; }
+
+  .hint{ font-size:13px; color:#555; background:var(--badge-bg); padding:6px 10px; border-radius:999px; }
+
+  .badgebar{ position:static; margin:0 16px 16px 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:10px 12px; background:var(--surface); border-radius:10px; box-shadow:var(--shadow); max-width:min(92vw, 1200px); }
+  .chip{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#fff3f3; color:#7a0000; border:1px solid #ffd1d1; font-size:14px; line-height:1; }
+  .chip b{ font-weight:700; }
+
+  .clicks-disabled g.marker{ cursor:not-allowed; }
+
+  /* Entrance markers: small, unnumbered, highlighter yellow */
+  g.entrance { pointer-events: none; }
+  g.entrance .dot{
+    fill: var(--highlight);
+    stroke:#000;
+    stroke-width:1.5;
+    filter: drop-shadow(0 0 6px rgba(255,247,0,.55));
+  }
+  g.entrance .star{
+    fill: var(--highlight);
+    stroke:#000;
+    stroke-width:1.5;
+    filter: drop-shadow(0 0 6px rgba(255,247,0,.55));
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar" role="region" aria-label="Map search">
+    <div class="searchbox">
+      <div class="fieldwrap">
+        <input id="search" type="search" placeholder="Search building names or try the tags food, class, sport, dorm" aria-label="Search buildings" autocomplete="off" />
+        <button id="clearBtn" class="clear" aria-label="Clear search" title="Clear search">×</button>
+      </div>
+      <button id="clearMarksBtn" class="clear-marks" aria-label="Clear highlighted markers" title="Clear highlighted markers">Clear</button>
+    </div>
+    <div id="hint" class="hint" aria-live="polite">Type to highlight buildings whose names or tags match.</div>
+  </div>
+
+  <div id="badgebar" class="badgebar" aria-live="polite" aria-label="Highlighted buildings"></div>
+
+  <svg id="mapSvg" role="img" aria-label="Loras College Campus Map">
+    <title>Loras College Campus Map</title>
+    <image id="baseImg" x="0" y="0" href="map.png" width="100" height="100" preserveAspectRatio="xMidYMid meet" />
+    <g id="markers"></g>
+  </svg>
+</div>
+
+<script id="overlay-mapping" type="application/json">
+{
+  "marker-1":   {"x":944.41,"y":356.71,"r":18},
+  "marker-2":   {"x":779.65,"y":293.01,"r":18},
+  "marker-2A":  {"x":889.21,"y":304.05,"r":18},
+  "marker-3":   {"x":634.42,"y":70.49,"r":18},
+  "marker-4":   {"x":744.83,"y":122.3,"r":18},
+  "marker-5":   {"x":668.39,"y":104.46,"r":18},
+  "marker-6":   {"x":81.52,"y":433.14,"r":18},
+  "marker-7":   {"x":834.0,"y":468.81,"r":18},
+  "marker-8":   {"x":784.74,"y":232.71,"r":18},
+  "marker-9":   {"x":673.48,"y":197.04,"r":18},
+  "marker-10":  {"x":684.53,"y":468.81,"r":18},
+  "marker-11":  {"x":300.64,"y":350.76,"r":18},
+  "marker-12":  {"x":636.96,"y":332.93,"r":18},
+  "marker-13":  {"x":525.71,"y":511.28,"r":18},
+  "marker-13A": {"x":482.39,"y":556.29,"r":18},
+  "marker-14A": {"x":825.51,"y":120,"r":18},
+  "marker-14":  {"x":824.66,"y":148.63,"r":18},
+  "marker-15":  {"x":966.49,"y":456.07,"r":18},
+  "marker-15A": {"x":1068.41,"y":601.3,"r":18},
+  "marker-16":  {"x":599.6,"y":200.43,"r":18},
+  "marker-17":  {"x":813.62,"y":266.68,"r":18},
+  "marker-18":  {"x":894.3,"y":264.98,"r":18},
+  "marker-19":  {"x":775.4,"y":450.13,"r":18},
+  "marker-20":  {"x":457.76,"y":389.83,"r":18},
+  "marker-21":  {"x":272.62,"y":426.35,"r":18},
+  "marker-22":  {"x":172.4,"y":355.01,"r":18},
+  "marker-23":  {"x":621.68,"y":282.82,"r":18},
+  "marker-24":  {"x":860.33,"y":189.39,"r":18},
+  "marker-25":  {"x":328.67,"y":590.26,"r":18},
+  "marker-26":  {"x":514.67,"y":248.0,"r":18},
+  "marker-26A": {"x":436.53,"y":270.93,"r":18},
+  "marker-27":  {"x":738.88,"y":371.99,"r":18},
+  "marker-28":  {"x":659.9,"y":249.69,"r":18},
+  "marker-28A": {"x":562.23,"y":230.16,"r":18},
+  "marker-29":  {"x":636.96,"y":410.21,"r":18},
+  "marker-30":  {"x":1142.3,"y":462.02,"r":18}
+}
+</script>
+<script>
+(function(){
+  const svg = document.getElementById('mapSvg');
+  const img = document.getElementById('baseImg');
+  const markersG = document.getElementById('markers');
+  const badgebar = document.getElementById('badgebar');
+  const searchInput = document.getElementById('search');
+  const clearBtn = document.getElementById('clearBtn');
+  const clearMarksBtn = document.getElementById('clearMarksBtn');
+  const hint = document.getElementById('hint');
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  // Record building marker centers/radii for entrance placement
+  const coordMap = {}; // { "1": {x,y,r}, ... }
+  let entrancesG = null; // <g> layer for entrance dots/stars
+
+  // Entrance-chip state for badgebar
+  let entranceBadgeItems = []; // [{building:"1", label:"Bookstore"}, ...]
+
+  // Toggle the entrance marker shape: 'star' or 'dot'
+  const ENTRANCE_SHAPE = 'star'; // change to 'dot' if you prefer circles again
+
+  const nameMap = {
+    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)|Library Spirit store Book",
+    "2": "Alumni Campus Center (ACC)|student center food pub cafe cafeteria bar",
+    "2A": "Cox Street Parking Lot",
+    "3": "Lynch-McCarthy Apartments (LMAC)|dorm",
+    "4": "Beckman Hall|dorm",
+    "5": "Binz Hall|dorm",
+    "6": "Byrne Oaks Complex (BO)|Dorm",
+    "7": "Christ the King Chapel (CTK)|Help Desk Technology",
+    "8": "Faber-Clark Soccer Field|sports",
+    "9": "Faber-Clark Softball Field|sports",
+    "10": "Fieldhouse|Sports",
+    "11": "Graber Sports Center|sports",
+    "12": "Grotto",
+    "13": "Hennessy Hall|Class",
+    "13A": "Hennessy Hall Parking Lot",
+    "14A": "Hoffmann Hall Parking Lot",
+    "14": "Hoffmann Hall|Class",
+    "15": "Keane Hall|Admissions Business Office class",
+    "15A": "Keane Hall Parking/McClain Lot",
+    "16": "Observatory",
+    "17": "Physical Plant",
+    "18": "Einstein Bros. Bagels|Food",
+    "19": "Heitkamp Planetarium",
+    "20": "Rock Bowl Stadium|sports",
+    "21": "Rohlman Hall|Dorm",
+    "22": "San Jose Swimming Pool|Sports",
+    "23": "Smyth Hall|Dorm",
+    "24": "St. Joseph Chapel/Music Hall",
+    "25": "St. Joseph Hall of Science|Class",
+    "26": "Tucker Tennis Courts|sports",
+    "26A": "17th Street Parking Lot",
+    "27": "Wahlert Hall|class",
+    "28": "Athletic &amp;amp;amp; Wellness Center (AWC)|sports",
+    "28A": "AWC Parking Lot",
+    "29": "Alumni Plaza",
+    "30": "Belmont House"
+  };
+
+  /*
+   * ABSOLUTE ENTRANCE POSITIONS
+   * For each tag below, specify one or more entries with a concrete absolute
+   * position in the same coordinate system as the markers (x,y).
+   */
+  const tagEntranceMap = {
+    // Building 1 (MARC): Bookstore, Spirit Store, Dewey's Perch
+    "bookstore":      [{ building:"1", abs:{ x:870, y:360 }, label:"MARC Dewey's Perch" }],
+    "book store":     [{ building:"1", abs:{ x:870, y:360 }, label:"MARC Dewey's Perch" }],
+    "spirit store":   [{ building:"1", abs:{ x:870, y:360 }, label:"MARC Dewey's Perch" }],
+    "dewey's perch":  [{ building:"1", abs:{ x:870, y:360 }, label:"MARC Dewey's Perch" }],
+    "deweys perch":   [{ building:"1", abs:{ x:870, y:360 }, label:"MARC Dewey's Perch" }],
+
+    // Building 7 (CTK): Help Desk, Technology
+    "technology help desk": [{ building:"7", abs:{ x:789, y:515 }, label:"CTK Technology Help Desk" }],
+    "technology center":    [{ building:"7", abs:{ x:789, y:515 }, label:"CTK Technology Center" }],
+
+    // Building 2 (ACC): Campus Security, Information Desk, Info Desk
+    "campus security": [{ building:"2", abs:{ x:780, y:320 }, label:"ACC Info Desk and Campus Security" }],
+    "information desk": [{ building:"2", abs:{ x:780, y:320 }, label:"ACC Info Desk and Campus Security" }],
+    "info desk":       [{ building:"2", abs:{ x:780, y:320 }, label:"ACC Info Desk and Campus Security" }]
+  };
+
+  // NEW: entrance codes -> canonical tags
+  const entranceCodeMap = {
+    "E1": "technology center" // Building 7 entrance code
+  };
+
+  function visibleName(raw){ return String(raw||'').split('|')[0].trim(); }
+
+  function drawMarker(key, x, y, r){
+    const id = 'marker-' + key;
+    const g = document.createElementNS(SVG_NS,'g');
+    g.setAttribute('id', id);
+    g.setAttribute('class','marker');
+
+    const c = document.createElementNS(SVG_NS,'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r||18);
+
+    const t = document.createElementNS(SVG_NS,'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('dominant-baseline','middle'); t.setAttribute('text-anchor','middle');
+    const fs = Math.max(10, (r||18) * 0.9); t.setAttribute('font-size', fs);
+    t.textContent = key;
+
+    const title = document.createElementNS(SVG_NS,'title');
+    title.textContent = `${visibleName(nameMap[key]||'Building')} (${key})`;
+
+    g.appendChild(title); g.appendChild(c); g.appendChild(t);
+    markersG.appendChild(g);
+    return g;
+  }
+
+  function getHighlightedKeys(){
+    return Array.from(document.querySelectorAll('g.marker.highlight')).map(g => g.id.replace(/^marker-/i,'').toUpperCase());
+  }
+
+  function setHighlighted(keys){
+    svg.querySelectorAll('g.marker.highlight').forEach(g=>g.classList.remove('highlight'));
+    (keys||[]).forEach(k=>{ const g = document.getElementById('marker-'+k); if(g) g.classList.add('highlight'); });
+    renderBadgebar(keys);
+  }
+
+  function renderBadgebar(keys){
+    const list = (keys && keys.length ? keys : getHighlightedKeys()).slice();
+    let chips = '';
+    if(list.length){
+      list.sort((a,b)=>{ const rx=/^([0-9]+)([A-Z]?)$/; const ma=a.match(rx), mb=b.match(rx); if(ma&&mb){ const na=+ma[1], nb=+mb[1]; if(na!==nb) return na-nb; return (ma[2]||'').localeCompare(mb[2]||''); } return a.localeCompare(b); });
+      chips += list.map(k => `<span class="chip"><b>${k}</b> ${visibleName(nameMap[k]||'Building')}</span>`).join('');
+    }
+    // Append entrance-tag chips (prefer code if available)
+    if(entranceBadgeItems && entranceBadgeItems.length){
+      const uniq = new Map();
+      entranceBadgeItems.forEach(it => {
+        const key = `${it.building}|${it.label.toLowerCase()}`;
+        if(!uniq.has(key)) uniq.set(key, it);
+      });
+      chips += Array.from(uniq.values()).map(it => `<span class="chip"><b>${it.building}</b> ${it.label}</span>`).join('');
+    }
+    badgebar.innerHTML = chips || '<span class="chip">No buildings selected</span>';
+  }
+
+  function getParamHighlights(paramName = 'b'){
+    const qs = new URLSearchParams(location.search);
+    const raw = qs.get(paramName);
+    if(!raw) return [];
+    return raw.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+  }
+
+  // read entrance tags from URL (?e=bookstore,info desk,E1)
+  function getParamEntranceTags(){
+    const qs = new URLSearchParams(location.search);
+    const raw = qs.get('e');
+    if(!raw) return [];
+    return raw.split(',').map(s => s.trim()).filter(Boolean);
+  }
+
+  // Resolve codes/phrases -> concrete tag keys (unique)
+  function resolveEntranceTags(inputTags){
+    const keys = Object.keys(tagEntranceMap);
+    const out = [];
+
+    (inputTags || []).forEach(raw => {
+      const q = String(raw || '').trim().toLowerCase();
+      if (!q) return;
+
+      // 1) Code -> canonical tag
+      const codeHit = Object.entries(entranceCodeMap)
+        .find(([code, tag]) => code.toLowerCase() === q);
+      if (codeHit) { out.push(codeHit[1]); return; }
+
+      // 2) Exact tag
+      const exact = keys.find(k => k.toLowerCase() === q);
+      if (exact) { out.push(exact); return; }
+
+      // 3) Partial match(es)
+      const partials = keys.filter(k => k.toLowerCase().includes(q));
+      out.push(...partials);
+    });
+
+    return Array.from(new Set(out));
+  }
+
+  // Entrance helpers
+  function ensureEntrancesLayer(){
+    if(!entrancesG){ entrancesG = document.createElementNS(SVG_NS,'g'); entrancesG.setAttribute('id','entrances'); svg.appendChild(entrancesG); }
+  }
+
+  function clearEntrances(){ ensureEntrancesLayer(); entrancesG.innerHTML = ''; }
+
+  function starPoints(cx, cy, spikes, outerR, innerR){
+    const pts = [];
+    const step = Math.PI / spikes;
+    let rot = -Math.PI/2;
+    for(let i=0;i<spikes*2;i++){
+      const r = (i%2===0) ? outerR : innerR;
+      const x = cx + Math.cos(rot) * r;
+      const y = cy + Math.sin(rot) * r;
+      pts.push(x.toFixed(2)+","+y.toFixed(2));
+      rot += step;
+    }
+    return pts.join(' ');
+  }
+
+  function drawMiniEntrance(x, y, title){
+    ensureEntrancesLayer();
+    const g = document.createElementNS(SVG_NS, 'g');
+    g.setAttribute('class', 'entrance');
+    const ttl = document.createElementNS(SVG_NS, 'title');
+    ttl.textContent = title || 'Entrance';
+    g.appendChild(ttl);
+
+    if(ENTRANCE_SHAPE === 'star'){
+      const poly = document.createElementNS(SVG_NS, 'polygon');
+      poly.setAttribute('class','star');
+      poly.setAttribute('points', starPoints(x, y, 5, 10, 4));
+      g.appendChild(poly);
+    } else {
+      const c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('class','dot');
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 8);
+      g.appendChild(c);
+    }
+    entrancesG.appendChild(g);
+  }
+
+  function positionsForTag(tag){
+    const cfgs = tagEntranceMap[tag] || [];
+    return cfgs.map(cfg => {
+      const bKey = String(cfg.building).toUpperCase();
+      const rec = coordMap[bKey]; if(!rec) return null;
+      let { x, y } = cfg.abs || {};
+      if(!(Number.isFinite(x) && Number.isFinite(y))){ x = rec.x; y = rec.y; }
+      const chip = (cfg.label || tag).replace(/\s*entrance\s*$/i, '').trim();
+      return { x:+x, y:+y, building: bKey, title: `${cfg.label || chip} — Building ${bKey}`, chipLabel: chip };
+    }).filter(Boolean);
+  }
+
+  function positionsForTags(tagKeys){
+    const all = [];
+    tagKeys.forEach(t => { all.push(...positionsForTag(t)); });
+    return all;
+  }
+
+  function findMatchingEntranceTags(q){
+    const term = q.trim().toLowerCase();
+    if(!term) return [];
+    const keys = Object.keys(tagEntranceMap);
+    return keys.filter(k => k.toLowerCase().includes(term));
+  }
+
+  function updateEntrancesForTags(tagKeys){
+    clearEntrances();
+    entranceBadgeItems = [];
+    if(!tagKeys || !tagKeys.length) { renderBadgebar(); return; }
+    const positions = positionsForTags(tagKeys);
+    positions.forEach(p => drawMiniEntrance(p.x, p.y, p.title));
+
+    // Prepare badge items; prefer code if one exists for this tag label
+    entranceBadgeItems = positions.map(p => {
+      let code = '';
+      for (const [k, v] of Object.entries(entranceCodeMap)) {
+        if (String(v).toLowerCase() === String(p.chipLabel).toLowerCase()) { code = k; break; }
+      }
+      const display = code ? code : p.chipLabel;
+      return { building: p.building, label: display };
+    });
+
+    renderBadgebar();
+  }
+
+  function init(){
+    const probe = new Image();
+    probe.onload = () =>{
+      svg.setAttribute('viewBox', `0 0 ${probe.naturalWidth} ${probe.naturalHeight}`);
+      img.setAttribute('width', probe.naturalWidth); img.setAttribute('height', probe.naturalHeight);
+      let mapping = {}; try { mapping = JSON.parse(document.getElementById('overlay-mapping').textContent); } catch(e) { console.error('JSON parse', e); }
+      for(const id in mapping){ const rec = mapping[id]; if(!rec) continue; const k = String(id).replace(/^marker-/i,'').toUpperCase(); const x=+rec.x, y=+rec.y, r=+rec.r||18; if(Number.isFinite(x)&&Number.isFinite(y)) { drawMarker(k,x,y,r); coordMap[k] = {x,y,r}; } }
+      ensureEntrancesLayer();
+
+      markersG.addEventListener('click', (e)=>{
+        if(searchInput.value.trim() !== '') return; // ignore clicks during active search
+        const g = e.target.closest('g.marker'); if(!g) return; const k = g.id.replace(/^marker-/i,'').toUpperCase();
+        g.classList.toggle('highlight');
+        renderBadgebar();
+      });
+
+      // Apply initial highlights from URL (?b=7,15A)
+      const initialKeys = getParamHighlights('b').filter(k => document.getElementById('marker-' + k));
+      if (initialKeys.length) {
+        setHighlighted(initialKeys);
+        hint.textContent = `Showing ${initialKeys.length} selected building${initialKeys.length!==1?'s':''} from link`;
+      }
+
+      // Apply initial entrances from URL (?e=bookstore,E1)
+      const initialEntranceTags = getParamEntranceTags();
+      const resolvedEntranceTags = resolveEntranceTags(initialEntranceTags);
+      if (resolvedEntranceTags.length) {
+        updateEntrancesForTags(resolvedEntranceTags);
+        hint.textContent = initialKeys.length
+          ? hint.textContent + ' and entrances from link'
+          : 'Showing entrances from link';
+      }
+
+      wireSearch();
+    };
+    probe.onerror = () =>{ console.error('map.png failed to load');
+      try{
+        let mapping = JSON.parse(document.getElementById('overlay-mapping').textContent);
+        let maxX=0, maxY=0; for(const id in mapping){ const rec=mapping[id]; if(rec){ maxX=Math.max(maxX, +rec.x); maxY=Math.max(maxY, +rec.y); const k=String(id).replace(/^marker-/i,'').toUpperCase(); drawMarker(k,+rec.x,+rec.y,+rec.r||18); coordMap[k] = {x:+rec.x, y:+rec.y, r:+rec.r||18}; } }
+        svg.setAttribute('viewBox', `0 0 ${Math.max(100,maxX+50)} ${Math.max(100,maxY+50)}`);
+        ensureEntrancesLayer();
+      }catch{}
+    };
+    probe.src = img.getAttribute('href') + '?v=' + Date.now();
+  }
+
+  function debounce(fn, ms){ let t; return function(...args){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), ms); }; }
+
+  function searchAndHighlight(term){
+    const q = term.trim().toLowerCase();
+    const container = svg;
+    if(q === ''){
+      container.classList.remove('clicks-disabled');
+      hint.textContent = 'Type to highlight buildings whose names or tags match.';
+      setHighlighted([]);
+      clearEntrances();
+      entranceBadgeItems = [];
+      renderBadgebar();
+      return;
+    }
+
+    container.classList.add('clicks-disabled');
+
+    const drawnKeys = Array.from(markersG.querySelectorAll('g.marker')).map(g=>g.id.replace(/^marker-/i,'').toUpperCase());
+
+    // Name/number matches (existing behavior)
+    const matchesFromName = drawnKeys.filter(k => {
+      const full = (nameMap[k]||'').toLowerCase();
+      return full.includes(q) || k.toLowerCase().includes(q);
+    });
+
+    // Partial-matching entrance tags
+    const matchedTags = findMatchingEntranceTags(q); // e.g., 'book' -> ['bookstore']
+    const extras = matchedTags.flatMap(tag => (tagEntranceMap[tag]||[]).map(cfg => String(cfg.building).toUpperCase()));
+
+    // Union set of buildings
+    const combined = Array.from(new Set([...matchesFromName, ...extras]));
+
+    if(combined.length){
+      hint.textContent = `${combined.length} match${combined.length!==1?'es':''} for "${term}"`;
+    } else {
+      hint.textContent = `No matches for "${term}"`;
+    }
+
+    setHighlighted(combined);
+
+    // Draw the small entrance markers and set entrance chips for all matched tags
+    updateEntrancesForTags(matchedTags);
+  }
+
+  function wireSearch(){
+    const run = debounce(()=> searchAndHighlight(searchInput.value), 120);
+    searchInput.addEventListener('input', run);
+    clearBtn.addEventListener('click', () =>{ searchInput.value=''; searchInput.focus(); searchAndHighlight(''); });
+
+    // Clear all highlighted markers and clear search box
+    clearMarksBtn.addEventListener('click', () =>{
+      // 1) Clear manual highlights
+      setHighlighted([]);
+      badgebar.innerHTML = '<span class="chip">No buildings selected</span>';
+      // 2) Clear search box and reset search-driven highlighting/state
+      searchInput.value = '';
+      searchAndHighlight('');
+      // 3) Also clear any entrance markers
+      clearEntrances();
+      entranceBadgeItems = [];
+      // 4) UX hint
+      hint.textContent = 'Highlights cleared. Type to search or click markers to select.';
+      // 5) Keep focus on search for quick re-entry
+      searchInput.focus();
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
