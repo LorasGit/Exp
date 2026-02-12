@@ -51,9 +51,9 @@
         <input id="search" type="search" placeholder="Search building names or try the tags food, class, sport, dorm" aria-label="Search buildings" autocomplete="off" />
         <button id="clearBtn" class="clear" aria-label="Clear search" title="Clear search">×</button>
       </div>
-      <button id="clearMarksBtn" class="clear-marks" aria-label="Clear highlighted markers" title="Clear highlighted markers">Clear highlights</button>
+      <button id="clearMarksBtn" class="clear-marks" aria-label="Clear highlighted markers" title="Clear highlighted markers">Clear</button>
     </div>
-    <div id="hint" class="hint" aria-live="polite">Type to highlight buildings whose names/descriptions match.</div>
+    <div id="hint" class="hint" aria-live="polite">Type to highlight buildings whose names or tags match.</div>
   </div>
 
   <div id="badgebar" class="badgebar" aria-live="polite" aria-label="Highlighted buildings"></div>
@@ -117,7 +117,7 @@
   const hint = document.getElementById('hint');
 
   const nameMap = {
-    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)|Library Spirt store Book",
+    "1": "Bill (A '52) and JoAnne Miller Academic Resource Center (MARC)|Library Spirit store Book",
     "2": "Alumni Campus Center (ACC)|student center food pub cafe cafeteria bar",
     "2A": "Cox Street Parking Lot",
     "3": "Lynch-McCarthy Apartments (LMAC)|dorm",
@@ -245,7 +245,7 @@
     const container = svg;
     if(q === ''){
       container.classList.remove('clicks-disabled');
-      hint.textContent = 'Type to highlight buildings whose names/descriptions match.';
+      hint.textContent = 'Type to highlight buildings whose names or tags match.';
       renderBadgebar();
       return;
     }
