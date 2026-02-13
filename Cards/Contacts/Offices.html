@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loras College Offices (3-column with Right Map Button)</title>
+  <title>Loras College Offices (2-column • Mobile-optimized)</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
@@ -20,10 +20,10 @@
 
     h2 { margin-bottom: 12px; font-size: 20px; }
 
-    /* Three-column layout: icons | info | map */
+    /* Two-column layout: icons | info */
     .office-row {
       display: grid;
-      grid-template-columns: 52px 1fr 52px; /* left icons, middle info, right map */
+      grid-template-columns: 52px 1fr; /* left icons, right info */
       gap: 8px;
       padding: 10px 0;
       border-bottom: 1px solid var(--primary-color);
@@ -33,16 +33,18 @@
     .office-info {
       font-size: 14px;
       line-height: 1.4;
-      grid-column: 2; /* middle column */
-      grid-row: 1;    /* align with action columns */
+      grid-column: 2; /* info on the right */
+      grid-row: 1;    /* align with actions */
+      word-break: break-word; /* mobile: prevent overflow for long text */
     }
 
     .office-info h3 { margin: 0 0 4px 0; font-size: 16px; color: var(--primary-color); }
 
-    a { color: var(--primary-color); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    /* Only text links in the info column get hover/underline */
+    .office-info a { color: var(--primary-color); text-decoration: none; }
+    .office-info a:hover, .office-info a:focus-visible { text-decoration: underline; }
 
-    /* Left actions (email, phone) */
+    /* Left actions (email, phone, map stacked) */
     .office-actions {
       display: grid;
       grid-auto-rows: min-content;
@@ -53,19 +55,8 @@
       grid-row: 1;
     }
 
-    /* Right map action */
-    .office-map {
-      display: grid;
-      grid-auto-rows: min-content;
-      gap: 10px;
-      justify-items: end;   /* push chip to the right edge of the column */
-      justify-self: end;
-      grid-column: 3; /* right column */
-      grid-row: 1;
-    }
-
     /* Shared chip styling */
-    .office-actions a, .office-map a {
+    .office-actions a {
       width: 44px; height: 44px;
       background: #ffffff;
       border-radius: 50%;
@@ -73,8 +64,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       text-decoration: none;
     }
-    .office-actions a:hover, .office-actions a:focus-visible,
-    .office-map a:hover, .office-map a:focus-visible {
+    .office-actions a:hover, .office-actions a:focus-visible {
       outline: 3px solid var(--primary-color);
       outline-offset: 2px;
       text-decoration: none;
@@ -82,11 +72,19 @@
 
     .material-symbols-outlined { font-size: 22px; color: var(--primary-color); }
 
+    /* Standard mobile refinements */
     @media (max-width: 480px) {
       body { padding: 8px; }
-      .office-row { gap: 6px; padding: 8px 0; }
+      .office-row { gap: 6px; padding: 8px 0; border-bottom: 1px solid #ddd; }
+      .office-actions { gap: 8px; }
       .office-info { font-size: 13px; }
       h2 { font-size: 18px; }
+    }
+
+    /* Ultra-narrow phones (~360–380px) */
+    @media (max-width: 380px) {
+      .office-row { gap: 4px; }
+      .office-actions a { width: 40px; height: 40px; }
     }
   </style>
 </head>
@@ -96,76 +94,89 @@
 <div id="offices" role="list" aria-labelledby="page-title"></div>
 
 <script>
-fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no-store" })
-  .then(response => response.json())
-  .then(data => {
-    const offices = data.offices || [];
-    offices.sort((a, b) => a.name.localeCompare(b.name));
-    const container = document.getElementById('offices');
+  // Optional helper: pretty-print 10-digit US numbers
+  function formatUSPhone(numStr) {
+    const d = (numStr || '').replace(/\D+/g, '');
+    if (d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+    return (numStr || '').trim();
+  }
 
-    offices.forEach(o => {
-      // Normalize phone (supports split fields or single field)
-      const rawPhone = o.phone || [o.area, o.prefix, o.line].filter(Boolean).join('-');
-      const show_phone = (rawPhone || '').replace(/\s+/g, '').replace(/-+$/,'');
+  fetch("https://lorasgit.github.io/Exp/Cards/Contacts/Offices.json", { cache: "no-store" })
+    .then(response => response.json())
+    .then(data => {
+      const offices = data.offices || [];
+      offices.sort((a, b) => a.name.localeCompare(b.name));
+      const container = document.getElementById('offices');
 
-      // Campus map link using `o.map`
-      const campusMapBase = 'https://lorasgit.github.io/Exp/Cards/Map/CampusMap.html?b=';
-      const campusMapURL = o.map ? campusMapBase + encodeURIComponent(o.map) : '';
+      offices.forEach(o => {
+        // Normalize phone (supports split fields or single field)
+        const rawPhone = o.phone || [o.area, o.prefix, o.line].filter(Boolean).join('-');
 
-      // Optional external links
-      let linksHtml = '';
-      if (!o.label1 && o.URL1) o.label1 = o.URL1;
-      if (o.label1 && o.URL1) {
-        linksHtml += `<a href="${o.URL1}" target="_blank" aria-label="${o.label1} for ${o.name}">${o.label1}</a>`;
-      }
-      if (!o.label2 && o.URL2) o.label2 = o.URL2;
-      if (o.label2 && o.URL2) {
-        linksHtml += `${linksHtml ? '<br />' : ''}<a href="${o.URL2}" target="_blank" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
-      }
+        // Display version (pretty if US 10 digits)
+        const displayPhone = formatUSPhone(rawPhone);
 
-      // Info block (no empty lines)
-      const infoLines = [];
-      if (o.hours) infoLines.push(o.hours);
-      if (o.location) infoLines.push(o.location);
-      if (o.email) infoLines.push(`<a href="mailto:${o.email}">${o.email}</a>`);
-      if (show_phone) infoLines.push(show_phone);
-      if (linksHtml) infoLines.push(linksHtml);
+        // Clean tel: target (digits only). Prepend +1 if it's 10-digit US.
+        const numericPhone = (rawPhone || '').replace(/\D+/g, '');
+        const telHref = numericPhone
+          ? `tel:${numericPhone.length === 10 ? `+1${numericPhone}` : numericPhone}`
+          : '';
 
-      const row = document.createElement('div');
-      row.className = 'office-row';
-      row.setAttribute('role', 'listitem');
+        // Campus map link using `o.map`
+        const campusMapBase = 'https://lorasgit.github.io/Exp/Cards/Map/CampusMap.html?b=';
+        const campusMapURL = o.map ? campusMapBase + encodeURIComponent(o.map) : '';
 
-      row.innerHTML = `
-        <div class="office-actions" aria-label="Actions for ${o.name}">
-          ${o.email ? `
-            <a href="mailto:${o.email}" aria-label="Email ${o.name}">
-              <span class="material-symbols-outlined" aria-hidden="true">mail</span>
-            </a>
-          ` : ''}
-          ${show_phone ? `
-            <a href="tel:${show_phone}" aria-label="Call ${o.name}">
-              <span class="material-symbols-outlined" aria-hidden="true">call</span>
-            </a>
-          ` : ''}
-        </div>
-        <div class="office-info">
-          <h3>${o.name}</h3>
-          ${infoLines.join('<br />')}
-        </div>
-        <div class="office-map" aria-label="Map for ${o.name}">
-          ${campusMapURL ? `
-            <a href="${campusMapURL}" target="_blank" rel="noopener" aria-label="Open campus map for ${o.name}">
-              <span class="material-symbols-outlined" aria-hidden="true">map</span>
-            </a>
-          ` : ''}
-        </div>`;
+        // Optional external links (hardened with rel)
+        let linksHtml = '';
+        if (!o.label1 && o.URL1) o.label1 = o.URL1;
+        if (o.label1 && o.URL1) {
+          linksHtml += `<a href="${o.URL1}" target="_blank" rel="noopener noreferrer" aria-label="${o.label1} for ${o.name}">${o.label1}</a>`;
+        }
+        if (!o.label2 && o.URL2) o.label2 = o.URL2;
+        if (o.label2 && o.URL2) {
+          linksHtml += `${linksHtml ? '<br />' : ''}<a href="${o.URL2}" target="_blank" rel="noopener noreferrer" aria-label="${o.label2} for ${o.name}">${o.label2}</a>`;
+        }
 
-      container.appendChild(row);
+        // Info block (no empty lines)
+        const infoLines = [];
+        if (o.hours) infoLines.push(o.hours);
+        if (o.location) infoLines.push(o.location);
+        if (o.email) infoLines.push(`<a href=\"mailto:${o.email}\">${o.email}</a>`);
+        if (displayPhone) infoLines.push(displayPhone);
+        if (linksHtml) infoLines.push(linksHtml);
+
+        const row = document.createElement('div');
+        row.className = 'office-row';
+        row.setAttribute('role', 'listitem');
+
+        row.innerHTML = `
+          <div class="office-actions" aria-label="Actions for ${o.name}">
+            ${o.email ? `
+              <a href="mailto:${o.email}" aria-label="Email ${o.name}">
+                <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+              </a>
+            ` : ''}
+            ${telHref ? `
+              <a href="${telHref}" aria-label="Call ${o.name}">
+                <span class="material-symbols-outlined" aria-hidden="true">call</span>
+              </a>
+            ` : ''}
+            ${campusMapURL ? `
+              <a href="${campusMapURL}" target="_blank" rel="noopener" aria-label="Open campus map for ${o.name}">
+                <span class="material-symbols-outlined" aria-hidden="true">map</span>
+              </a>
+            ` : ''}
+          </div>
+          <div class="office-info">
+            <h3>${o.name}</h3>
+            ${infoLines.join('<br />')}
+          </div>`;
+
+        container.appendChild(row);
+      });
+    })
+    .catch(err => {
+      document.getElementById('offices').innerHTML = `<p style=\"color:red\">Error loading offices: ${err.message}</p>`;
     });
-  })
-  .catch(err => {
-    document.getElementById('offices').innerHTML = `<p style="color:red">Error loading offices: ${err.message}</p>`;
-  });
 </script>
 
 </body>
