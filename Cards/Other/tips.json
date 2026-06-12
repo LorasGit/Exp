@@ -1,0 +1,18 @@
+{
+    "items": [
+        {
+            "headline": "Experience is made for you to customize.",
+            "body": "Find the cards you want to see and click on the bookmark icon. That card will show up on your home tab.",
+            "link_text": "Click here for more.",
+            "link_url": "#",
+            "image": "https://raw.githubusercontent.com/LorasGit/Exp/main/Cards/Photos/Example/VKeane.jpg"
+        },
+        {
+            "headline": "Explore New Features",
+            "body": "Discover new tools and capabilities available in the platform.",
+            "link_text": "Learn more",
+            "link_url": "#",
+            "image": "https://raw.githubusercontent.com/LorasGit/Exp/main/Cards/Photos/Example/MARC.jpg"
+        }
+    ]
+}
